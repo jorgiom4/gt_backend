@@ -12,6 +12,9 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Rutas globales
+app.use(require('../rutas/rutas'));
+
 
 // Escuchar peticiones
 app.listen(3000, () => {
