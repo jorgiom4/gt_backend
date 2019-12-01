@@ -43,19 +43,11 @@ app.post('/', verificaToken, (req, res) => {
     var isoDate = fecha.toISOString();
 
     var usuario = new Usuario({
-        nombre: body.nombre,
-        apellido: body.apellido,
-        dni: body.dni,
-        tlf: body.tlf,
-        tlf2: body.tlf2,
-        direc: body.direc,
-        city: body.city,
-        cp: body.cp,
-        locali: body.locali,
-        email: body.email,
-        pass: bcrypt.hashSync(body.pass, 10),
-        img: body.img,
+        datos_personales: body.datos_personales,
+        ubicacion: body.ubicacion,
+        datos_acceso: body.datos_acceso,
         desc: body.desc,
+        datos_laborales: body.datos_laborales,
         role: body.role,
         dateAdd: isoDate,
         active: true

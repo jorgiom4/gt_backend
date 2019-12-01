@@ -1,6 +1,6 @@
 /**
  * Usuarios.
- * Schema para los usuarios.
+ * Schema para los clientes.
  */
 
 var mongoose = require('mongoose');
@@ -8,7 +8,7 @@ var uniqueValidator = require('mongoose-unique-validator');
 
 var Schema = mongoose.Schema;
 
-var usuarioSchema = new Schema({
+var clienteSchema = new Schema({
     datos_personales: {
         nombre: {
             type: String,
@@ -73,60 +73,9 @@ var usuarioSchema = new Schema({
             type: String,
             required: [true, 'El password es necesario.']
         }
-    },
-    desc: {
-        type: String,
-        required: [true, 'Necesitamos el comentario de montivación relleno.']
-    },
-    datos_laborales: {
-        estudios: {
-            type: String
-        },
-        experiencia: {
-            type: String
-        },
-        titulos: [{
-            nombre: {
-                type: String
-            },
-            fecha: {
-                type: String
-            }
-        }],
-        cursos: [{
-            nombre: {
-                type: String
-            },
-            fecha: {
-                type: Date
-            }
-        }]
-    },
-    role: {
-        type: String,
-        required: [true, 'El del usuario es necesario.']
-    },
-    dateAdd: {
-        type: Date,
-        required: [true, 'La fecha de alta en necesaria.']
-    },
-    active: {
-        type: Boolean,
-        reuired: [true, 'El estado del usuario es necesario']
-
     }
 
 });
 
-//Creamos un objeto usuario con los campos que necesitamos para visualización
-usuarioSchema.methods.toJSON = function() {
-
-    var user = this;
-    var userObject = user.toObject();
-    delete userObject.datos_personales.pass;
-
-    return userObject;
-};
-
-usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
-module.exports = mongoose.model('Usuario', usuarioSchema);
+clienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
+module.exports = mongoose.model('Cliente', clienteSchema);
