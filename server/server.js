@@ -2,6 +2,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var urlDB = require('../config/config').urlDB;
 
 // Inicializar variables
 var app = express();
@@ -26,7 +27,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
-mongoose.connect('mongodb://admin:admin@instancia2.com:27017/geritronic_dev1', (err, res) => {
+mongoose.connect(urlDB, (err, res) => {
 
     if (err) throw err;
     console.log('Base de datos: \x1b[32m%s\x1b[0m', 'online');
