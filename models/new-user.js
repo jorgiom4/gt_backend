@@ -33,5 +33,5 @@ var newUserSchema = new Schema({
     }
 });
 
-usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
+newUserSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 module.exports = mongoose.model('usuarios_nuevos', newUserSchema);
