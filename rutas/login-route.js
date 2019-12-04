@@ -11,7 +11,7 @@ app.post('/', (req, res) => {
 
     var body = req.body;
 
-    Usuario.findOne({ email: body.email }, (err, usuarioDB) => {
+    Usuario.findOne({ "datos_acceso.email": body.email }, (err, usuarioDB) => {
 
         if (err) {
             return res.status(500).json({
@@ -29,7 +29,7 @@ app.post('/', (req, res) => {
             });
         }
 
-        if (!bcrypt.compareSync(body.pass, usuarioDB.pass)) {
+        if (!bcrypt.compareSync(body.pass, usuarioDB.datos_acceso.pass)) {
             return res.status(400).json({
                 ok: false,
                 mensaje: 'Credenciales incorrectas - password',

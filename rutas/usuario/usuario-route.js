@@ -5,12 +5,12 @@ var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticac
 var app = express();
 var Usuario = require('../../models/usuario');
 
-// ==========================================
-// Obtener todos los usuarios
-// ==========================================
+// ========================================================
+// Obtener todos los usuarios filtrado por datos personales
+// ========================================================
 app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
 
-    Usuario.find({}, 'nombre apellido dni tlf tlf2 direc city cp locali email img desc role dateAdd active')
+    Usuario.find({}, 'datos_personales')
         .exec(
             (err, usuarios) => {
 
@@ -38,6 +38,15 @@ app.post('/', (req, res) => {
 
     var body = req.body;
 
+    //Objeto datos de acceso del usuario para poder encriptar la pass del usuario
+    var usuarioLogin = {
+        email: String,
+        pass: String
+    };
+
+    usuarioLogin.email = body.datos_acceso.email;
+    usuarioLogin.pass = bcrypt.hashSync(body.datos_acceso.pass, 10);
+
     //Obtenemos la fecha de insercion en formato IsoDate
     var fecha = new Date();
     var isoDate = fecha.toISOString();
@@ -45,7 +54,7 @@ app.post('/', (req, res) => {
     var usuario = new Usuario({
         datos_personales: body.datos_personales,
         ubicacion: body.ubicacion,
-        datos_acceso: body.datos_acceso,
+        datos_acceso: usuarioLogin,
         desc: body.desc,
         datos_laborales: body.datos_laborales,
         role: body.role,
@@ -66,7 +75,7 @@ app.post('/', (req, res) => {
         res.status(201).json({
             ok: true,
             mensaje: 'Usuario creado correctamente',
-            usuario: usuarioGuardado
+            usuario: usuarioGuardado.datos_personales
         });
     });
 });

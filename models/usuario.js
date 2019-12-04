@@ -23,6 +23,10 @@ var usuarioSchema = new Schema({
             unique: true,
             required: [true, 'El DNI es necesario.']
         },
+        fecha_naci: {
+            type: Date,
+            required: [true, 'Fecha de nacimiento es obligatorio']
+        },
         direc: {
             type: String,
             required: [true, 'La dirección es necesaria.']

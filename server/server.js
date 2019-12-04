@@ -7,7 +7,6 @@ var urlDB = require('../config/config').urlDB;
 // Inicializar variables
 var app = express();
 
-
 // Body Parser
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,10 +15,11 @@ app.use(bodyParser.json());
 // Rutas globales
 app.use(require('../rutas/rutas'));
 
-
 // Escuchar peticiones
 app.listen(3000, () => {
+
     console.log('Express server puerto 3000: \x1b[32m%s\x1b[0m', 'online');
+
 });
 
 // Conexión a la base de datos
