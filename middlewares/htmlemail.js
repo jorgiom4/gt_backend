@@ -2,7 +2,7 @@
 // Codigo HTML para el contenido de los emails enviado a los usuarios
 // ==================================================================
 
-exports.getHtmlForRegisterUserEmail = () => {
+exports.getHtmlForRegisterUserEmail = (enlace) => {
     var html = `<!doctype html> \
     <html lang="en"> \
     <head> \
@@ -29,4 +29,9 @@ exports.getHtmlForRegisterUserEmail = () => {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
     </html>`;
+
+    //Metemos el enlace para validar el correo
+    html = html.replace("{link}", enlace);
+
+    return html;
 };

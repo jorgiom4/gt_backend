@@ -27,8 +27,10 @@ exports.sendMail = (eTo, eSubject, eText) => {
         from: serverFrom,
         to: eTo,
         subject: eSubject,
-        text: eText
+        html: eText
     };
+
+    //console.log("mailoptions: " + mailOptions.from + " " + mailOptions.to + " " + mailOptions.subject + " " + mailOptions.html);
 
     // Realizamos el envio del email
     transporter.sendMail(mailOptions, (error, info) => {
@@ -38,4 +40,5 @@ exports.sendMail = (eTo, eSubject, eText) => {
             console.log('Email sent: ' + info.response);
         }
     });
+
 };

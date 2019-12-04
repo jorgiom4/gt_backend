@@ -20,18 +20,15 @@ app.post('/', (req, res) => {
     //Generamos el seed aleatorio
     var random = randomstring.generate(128);
 
-    //Componemos y enviamos el mail para validación del email del usuario
-    var texto = htmlEmail.getHtmlForRegisterUserEmail();
-    mailService.sendMail(body.email, "Geritronic - Validación correo electrónico", texto);
-
     //Guardamos en base de datos el nuevo registro
     var fecha = new Date();
     var isoDate = fecha.toISOString();
 
     var usuarioNuevo = new NewUser({
-        nombre: body.nombre,
-        email: body.email,
+        nombre: body.userName,
+        email: body.userMail,
         pass: bcrypt.hashSync(body.userPass, 10),
+        randomText: random,
         dateAdd: isoDate,
         active: false,
         valid: false
@@ -47,22 +44,21 @@ app.post('/', (req, res) => {
             });
         }
 
-        res.status(201).json({
+        //Componemos y enviamos el mail para validación del email del usuario
+        var enlace = "";
+
+        var texto = htmlEmail.getHtmlForRegisterUserEmail(enlace);
+        //console.log("Registrando nuevo usuario, texto html: " + texto);
+        mailService.sendMail(body.userMail, "Geritronic - Validación correo electrónico", texto);
+
+        //Envío de respuesta
+        res.status(200).json({
             ok: true,
-            mensaje: 'Usuario registrado correctamente',
-            usuario: usuarioGuardado.nombre
+            message: 'Usuario registrado correctamente',
+            nombre: usuarioGuardado.nombre,
+            email: usuarioGuardado.email
         });
     });
-
-    //Envío de respuesta
-    res.status(200).json({
-        ok: true,
-        message: 'Dentro del registro de nuevo usuario',
-        userMail: body.userMail,
-        userName: body.userName,
-        userPass: body.userPass
-    });
-
 });
 
 

@@ -20,6 +20,10 @@ var newUserSchema = new Schema({
         type: String,
         required: [true, 'La constraseña de usuario es obligatorio']
     },
+    randomText: {
+        type: String,
+        required: [true, 'RandomText es obligatorio']
+    },
     dateAdd: {
         type: Date
     },
