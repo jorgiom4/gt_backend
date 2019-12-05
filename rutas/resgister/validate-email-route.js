@@ -11,38 +11,56 @@ var app = express();
 // ================================================================================
 // Validamos contra la base de datos el email del usuario con el token generado
 // ================================================================================
+app.get('/:token', (req, res) => {
 
-app.get('/', (req, res) => {
-
-    var token = req.query.token;
+    var token = req.params.token;
 
     console.log("Token usuario: " + token);
 
-    UsuarioNuevo.find({ 'randomTe': token }, (err, usuario) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error al validar token nuevo usuario',
-                errors: err
-            });
-        }
+    var promesa = buscarNuevoUsuarioByToken(token);
 
-        if (!usuario) {
-            return res.status(400).json({
-                ok: false,
-                mensaje: 'El usuario con el token ' + token + ' no existe',
-                errors: { message: 'No existe un usuario con ese token' }
-            });
-        }
-
+    promesa.then(data => {
         res.status(200).json({
             ok: true,
-            mensaje: 'Email de usuario validado corretamente',
-            usuario: usuario
+            usuario: data
         });
-
+    }, (err) => {
+        console.log(err);
+        res.status(400).json({
+            ok: false,
+            error: err,
+            mensaje: "Error al validar nuevo usuario."
+        });
     });
 
 });
+
+// =================================
+// Buscamos usuario por nombre
+// =================================
+function buscarNuevoUsuarioByToken(token) {
+    return new Promise((resolve, reject) => {
+
+        UsuarioNuevo.findOne({ randomText: token })
+            .exec((err, usuario) => {
+                if (err) {
+                    reject('Error al buscar el usuario con token: ' + token + '', err);
+                }
+                if (!usuario) {
+                    reject('Error al buscar el usuario con token: ' + token + '', err);
+                } else {
+
+                    // Comprobamos que el token sigue vigente y no ha caducado
+                    var fechaActual = new Date().toISOString();
+                    var fechaExp = new Date(usuario.dateExp).toISOString();
+                    if (fechaExp < fechaActual) {
+                        reject('El token introducido ha caducado el: ' + fechaExp + '', err);
+                    } else {
+                        resolve(usuario);
+                    }
+                }
+            });
+    });
+}
 
 module.exports = app;

@@ -14,22 +14,28 @@ var app = express();
 // Obtenemos los datos del usuario que quiere registrarse
 app.post('/', (req, res) => {
 
-    //Obtenemos la informacion del usuario
+    // Obtenemos la informacion del usuario
     var body = req.body;
 
     //Generamos el seed aleatorio
     var random = randomstring.generate(128);
 
-    //Guardamos en base de datos el nuevo registro
+    // Creamos las fechas de creación y expiracion
     var fecha = new Date();
     var isoDate = fecha.toISOString();
+    var fechaToken = new Date(isoDate);
+    var fechaAux = new Date(fechaToken);
+    // El token expira en un dia
+    var fechaExp = new Date(fechaAux.setDate(fechaAux.getDate() + 1)).toISOString();
 
+    // Guardamos en base de datos el nuevo registro
     var usuarioNuevo = new NewUser({
         nombre: body.userName,
         email: body.userMail,
         pass: bcrypt.hashSync(body.userPass, 10),
         randomText: random,
         dateAdd: isoDate,
+        dateExp: fechaExp,
         active: false,
         valid: false
     });

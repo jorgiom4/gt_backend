@@ -27,6 +27,9 @@ var newUserSchema = new Schema({
     dateAdd: {
         type: Date
     },
+    dateExp: {
+        type: Date
+    },
     active: {
         type: Boolean,
         default: false
@@ -36,6 +39,18 @@ var newUserSchema = new Schema({
         default: false
     }
 });
+
+//Creamos un objeto usuario con los campos que necesitamos para visualización
+newUserSchema.methods.toJSON = function() {
+
+    var user = this;
+    var userObject = user.toObject();
+    delete userObject._id;
+    delete userObject.pass;
+    delete userObject.randomText;
+
+    return userObject;
+};
 
 newUserSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 module.exports = mongoose.model('usuarios_nuevos', newUserSchema);
