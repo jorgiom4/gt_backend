@@ -14,7 +14,8 @@ var newUserSchema = new Schema({
     },
     email: {
         type: String,
-        required: [true, 'El email de usuario es obligatorio']
+        required: [true, 'El email de usuario es obligatorio'],
+        unique: true
     },
     pass: {
         type: String,
@@ -45,7 +46,6 @@ newUserSchema.methods.toJSON = function() {
 
     var user = this;
     var userObject = user.toObject();
-    delete userObject._id;
     delete userObject.pass;
     delete userObject.randomText;
 

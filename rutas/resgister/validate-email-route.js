@@ -8,37 +8,57 @@ var UsuarioNuevo = require('../../models/new-user');
 
 var app = express();
 
-// ================================================================================
+// ============================================================================
 // Validamos contra la base de datos el email del usuario con el token generado
-// ================================================================================
+// ============================================================================
 app.get('/:token', (req, res) => {
 
     var token = req.params.token;
 
-    console.log("Token usuario: " + token);
+    buscarNuevoUsuarioByToken(token)
 
-    var promesa = buscarNuevoUsuarioByToken(token);
+    .then(data => {
 
-    promesa.then(data => {
-        res.status(200).json({
-            ok: true,
-            usuario: data
+            // Actualizamos el estado de la validación para confirmar el proceso y la cuenta del usuario/cliente pase a estar validada y activa
+            actualizaValidacionUsuario(data)
+
+            .then(data => {
+
+                    console.log("Proceso de validación de nuevo usuario OK");
+
+                    res.status(200).json({
+                        ok: true,
+                        usuario: data
+                    });
+
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(400).json({
+                        ok: false,
+                        error: err,
+                        mensaje: "Error al validar nuevo usuario."
+                    });
+                });
+
+        })
+        .catch(err => {
+            console.log(err);
+
+            res.status(400).json({
+                ok: false,
+                error: err,
+                mensaje: "Error al validar nuevo usuario."
+            });
         });
-    }, (err) => {
-        console.log(err);
-        res.status(400).json({
-            ok: false,
-            error: err,
-            mensaje: "Error al validar nuevo usuario."
-        });
-    });
 
 });
 
-// =================================
+// ============================
 // Buscamos usuario por nombre
-// =================================
+// ============================
 function buscarNuevoUsuarioByToken(token) {
+
     return new Promise((resolve, reject) => {
 
         UsuarioNuevo.findOne({ randomText: token })
@@ -51,9 +71,9 @@ function buscarNuevoUsuarioByToken(token) {
                 } else {
 
                     // Comprobamos que el token sigue vigente y no ha caducado
-                    var fechaActual = new Date().toISOString();
-                    var fechaExp = new Date(usuario.dateExp).toISOString();
-                    if (fechaExp < fechaActual) {
+                    var fechaActual = new Date();
+                    var fechaExp = new Date(usuario.dateExp);
+                    if (fechaActual > fechaExp) {
                         reject('El token introducido ha caducado el: ' + fechaExp + '', err);
                     } else {
                         resolve(usuario);
@@ -61,6 +81,28 @@ function buscarNuevoUsuarioByToken(token) {
                 }
             });
     });
+}
+
+// ==============================================================
+// Actualizamos en BD para activar y validar la cuenta de usuario
+// ==============================================================
+function actualizaValidacionUsuario(usuario) {
+
+    return new Promise((resolve, reject) => {
+
+        UsuarioNuevo.updateOne({ _id: usuario._id }, { $set: { active: true, valid: true } })
+            .exec((err, usuarioActualizado) => {
+                if (err) {
+                    reject('Error al actualizar la cuenta del usuario con token: ' + token + '', err);
+                }
+                if (!usuarioActualizado) {
+                    reject('Error al actualizar la cuenta del usuario no se ha encontrado el usuario con id: ' + usuario._id + '', err);
+                } else {
+                    resolve(usuario);
+                }
+            });
+    });
+
 }
 
 module.exports = app;
