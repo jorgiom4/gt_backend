@@ -57,6 +57,11 @@ var usuarioSchema = new Schema({
             type: String,
             unique: false,
             required: false
+        },
+        cv: {
+            type: String,
+            unique: false,
+            require: false
         }
     },
     ubicacion: {

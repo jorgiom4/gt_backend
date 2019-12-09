@@ -1,3 +1,7 @@
+// ==============================================================
+// Rutas para la creación y actualización de los datos de usuario
+// ==============================================================
+
 var express = require('express');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
@@ -113,78 +117,13 @@ app.post('/', (req, res) => {
 
 });
 
-// ==========================================
-// Actualizar usuario
-// ==========================================
-app.put('/', verificaToken, (req, res) => {
-
-    //var id = req.params.id;
-    var body = req.body;
-    var id = body._id;
-
-    Usuario.findById(id, (err, usuario) => {
-
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error al buscar usuario',
-                errors: err
-            });
-        }
-
-        if (!usuario) {
-            return res.status(400).json({
-                ok: false,
-                mensaje: 'El usuario con el id ' + id + ' no existe',
-                errors: { message: 'No existe un usuario con ese ID' }
-            });
-        }
-
-        usuario.nombre = body.nombre;
-        usuario.apellido = body.apellido;
-        usuario.dni = body.dni;
-        usuario.tlf = body.tlf;
-        usuario.tlf2 = body.tlf2;
-        usuario.direc = body.direc;
-        usuario.city = body.city;
-        usuario.cp = body.cp;
-        usuario.locali = body.locali;
-        usuario.email = body.email;
-        usuario.img = body.img;
-        usuario.desc = body.desc;
-        usuario.role = body.role;
-        usuario.active = body.active;
-
-        usuario.save((err, usuarioGuardado) => {
-
-            if (err) {
-                return res.status(400).json({
-                    ok: false,
-                    mensaje: 'Error al actualizar usuario',
-                    errors: err
-                });
-            }
-
-            usuarioGuardado.password = ':)';
-
-            res.status(200).json({
-                ok: true,
-                mensaje: 'Usuario actualizado corretamente',
-                usuario: usuarioGuardado
-            });
-        });
-    });
-});
-
-// ====================================================================
-// Actualizamos los datos de usuario añadiendo un nuevo tlf de contacto
-// ====================================================================
+// =============================================
+// Añadimos un nuevo tlf de contacto del usuario
+// =============================================
 app.put('/contact', (req, res) => {
 
     var body = req.body;
     var id = body.id;
-
-    console.log("Dentro de contact: " + id);
 
     Usuario.findByIdAndUpdate(id, { $push: { "datos_personales.contacto": { tlf: body.tlf } } }, (err, contactoGuardado) => {
         if (err) {
@@ -204,15 +143,13 @@ app.put('/contact', (req, res) => {
 
 });
 
-// ================================================================
-// Actualizamos los datos de usuario añadiendo una nueva titulacion
-// ================================================================
+// =========================================
+// Añadimos una nueva titulacion del usuario
+// =========================================
 app.put('/titulo', (req, res) => {
 
     var body = req.body;
     var id = body.id;
-
-    console.log("Dentro de titulo: " + id);
 
     Usuario.findByIdAndUpdate(id, { $push: { "datos_laborales.titulos": { nombre: body.nombre, fecha: body.fecha } } }, (err, titulo) => {
 
@@ -235,6 +172,42 @@ app.put('/titulo', (req, res) => {
                 ok: true,
                 menaaje: 'Nuevo titulo creado correctamente',
                 titulo: titulo
+            });
+        }
+
+    });
+
+});
+
+// ===================================
+// Añadimos un nuevo curso del usuario
+// ===================================
+app.put('/curso', (req, res) => {
+
+    var body = req.body;
+    var id = body.id;
+
+    Usuario.findByIdAndUpdate(id, { $push: { "datos_laborales.cursos": { nombre: body.nombre, fecha: body.fecha } } }, (err, curso) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al crear nuevo curso',
+                errors: err
+            });
+        }
+
+        if (!curso) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'El usuario con el id ' + id + ' no existe',
+                errors: { message: 'No existe un usuario con ese ID' }
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                menaaje: 'Nuevo curso creado correctamente',
+                curso: curso
             });
         }
 
