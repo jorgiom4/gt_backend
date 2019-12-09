@@ -9,9 +9,10 @@ var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticac
 var app = express();
 var Usuario = require('../../models/usuario');
 
-// ===========================================================
+// =============================================
 // Actualizamos los datos personales del usuario
-// ===========================================================
+// Se guardan todos los datos en conjunto
+// =============================================
 app.put('/personales', (req, res) => {
 
     var body = req.body;
@@ -52,9 +53,10 @@ app.put('/personales', (req, res) => {
     });
 });
 
-// ==============================================
+// ============================================================================
 // Actualizamos los datos de contacto del usuario
-// ==============================================
+// Se guardan todos en conjunto por ahora no se puede modificar individualmente
+// ============================================================================
 app.put('/contacto', (req, res) => {
 
     var body = req.body;
@@ -126,9 +128,10 @@ app.put('/img', (req, res) => {
     });
 });
 
-// ==============================================
+// ========================================================
 // Actualizamos los datos de ubicación del usuario
-// ==============================================
+// Se guardan los dos datos latitud y longuitud en conjunto
+// ========================================================
 app.put('/ubicacion', (req, res) => {
 
     var body = req.body;
@@ -199,9 +202,9 @@ app.put('/email', (req, res) => {
     });
 });
 
-// ============================================
+// ==========================
 // Actualizamos la contraseña
-// ============================================
+// ==========================
 app.put('/pass', (req, res) => {
     var body = req.body;
     var id = body.id;
@@ -235,15 +238,124 @@ app.put('/pass', (req, res) => {
     });
 });
 
+// =======================================
+// Actualizamos la descripción del usuario
+// =======================================
+app.put('/desc', (req, res) => {
+
+    var body = req.body;
+    var id = body.id;
+
+    Usuario.findByIdAndUpdate(id, {
+        $set: {
+            "desc": body.desc
+        }
+    }, (err, descGuardada) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar la descripción del usuario',
+                errors: err
+            });
+        }
+        if (!descGuardada) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Descripción actualizada correctamente',
+                desc: body.desc
+            });
+        }
+    });
+});
+
 // ==================================================================
 // Actualizamos los datos laborales estudio y experiencia del usuario
+// Se guardan todos los datos en conjunto
 // ==================================================================
+app.put('/laboral', (req, res) => {
 
+    var body = req.body;
+    var id = body.id;
+
+    Usuario.findByIdAndUpdate(id, {
+        $set: {
+            "datos_laborales.estudios": body.datos_laborales.estudios,
+            "datos_laborales.experiencia": body.datos_laborales.experiencia
+        }
+    }, (err, datosGuardados) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar los datos laborales del usuario',
+                errors: err
+            });
+        }
+        if (!datosGuardados) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Datos laborales actualizados correctamente',
+                datos: body.datos_laborales
+            });
+        }
+    });
+});
 
 // ==================================================
 // Actualizamos los datos de los titutlos del usuario
 // ==================================================
+app.put('/titulo', (req, res) => {
 
+    var body = req.body;
+    var id = body.id;
+    var idT = body.titulos.idT;
+
+    var queryparam1 = '\"datos_laborales.titulos.0.nombre\"';
+    var queryparam2 = '\"datos_laborales.titulos.0.fecha\"';
+
+    console.log(queryparam1);
+    console.log(queryparam2);
+
+    Usuario.findByIdAndUpdate(id, {
+        $set: {
+            queryparam1: body.titulos.nombre,
+            queryparam2: body.titulos.fecha
+
+        }
+    }, (err, tituloGuardado) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar título del usuario',
+                errors: err
+            });
+        }
+        if (!tituloGuardado) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Título actualizado correctamente',
+                titulo: tituloGuardado
+            });
+        }
+    });
+});
 
 // ============================================
 // Actualizamos los datos de cursos del usuario
@@ -253,11 +365,6 @@ app.put('/pass', (req, res) => {
 // ===============================
 // Actualizamos el rol del usuario
 // ===============================
-
-
-// =======================================
-// Actualizamos la descripción del usuario
-// =======================================
 
 
 

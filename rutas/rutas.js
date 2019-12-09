@@ -10,6 +10,7 @@ var usuarioRuta = require('../rutas/usuario/usuario-route');
 var usuarioUpdateRuta = require('../rutas/usuario/usuario-update-route');
 
 var loginRuta = require('../rutas/login-route');
+var uploadRuta = require('../rutas/upload');
 
 // Rutas registro nuevos usuarios/clientes
 app.use('/register/new', registerUserRuta);
@@ -21,6 +22,9 @@ app.use('/usuario/update', usuarioUpdateRuta);
 
 // Ruta login usuarios/clientes/pacientes
 app.use('/login', loginRuta);
+
+// Ruta gestion de ficheros
+app.use('/upload', uploadRuta);
 
 
 module.exports = app;
