@@ -46,7 +46,7 @@ app.put('/personales', (req, res) => {
             return res.status(200).json({
                 ok: true,
                 mensaje: 'Datos personales actualizados correctamente',
-                datos: datosGuardados
+                datos: body.datos_personales
             });
         }
     });
@@ -83,27 +83,157 @@ app.put('/contacto', (req, res) => {
             return res.status(200).json({
                 ok: true,
                 mensaje: 'Contacto actualizado correctamente',
-                contacto: contactoGuardado
+                contacto: contacto
             });
         }
     });
-
 });
 
 // ==================================
 // Actualizamos la imagen del usuario
 // ==================================
+app.put('/img', (req, res) => {
 
+    var body = req.body;
+    var id = body.id;
+    var img = body.img;
+
+    Usuario.findByIdAndUpdate(id, {
+        $set: {
+            "datos_personales.img": img
+        }
+    }, (err, imgGuardada) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar la imagen del usuario',
+                errors: err
+            });
+        }
+        if (!imgGuardada) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Imagen actualizada correctamente',
+                img: img
+            });
+        }
+    });
+});
 
 // ==============================================
 // Actualizamos los datos de ubicación del usuario
 // ==============================================
+app.put('/ubicacion', (req, res) => {
 
+    var body = req.body;
+    var id = body.id;
+    var ubicacion = body.ubicacion;
+
+    Usuario.findByIdAndUpdate(id, {
+        $set: {
+            "ubicacion": ubicacion
+        }
+    }, (err, ubicacionGuardada) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar la ubicación del usuario',
+                errors: err
+            });
+        }
+        if (!ubicacionGuardada) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Ubicación actualizada correctamente',
+                ubicacion: ubicacion
+            });
+        }
+    });
+});
 
 // ============================================
-// Actualizamos los datos de acceso del usuario
+// Actualizamos el email del usuario
 // ============================================
+app.put('/email', (req, res) => {
+    var body = req.body;
+    var id = body.id;
+    var email = body.email;
 
+    Usuario.findByIdAndUpdate(id, {
+        $set: {
+            "datos_acceso.email": email
+        }
+    }, (err, emailGuardado) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar el email del usuario',
+                errors: err
+            });
+        }
+        if (!emailGuardado) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Email actualizado correctamente',
+                email: email
+            });
+        }
+    });
+});
+
+// ============================================
+// Actualizamos la contraseña
+// ============================================
+app.put('/pass', (req, res) => {
+    var body = req.body;
+    var id = body.id;
+    var pass = body.pass;
+
+    Usuario.findByIdAndUpdate(id, {
+        $set: {
+            "datos_acceso.pass": bcrypt.hashSync(pass, 10)
+        }
+    }, (err, passGuardada) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar la contraseña del usuario',
+                errors: err
+            });
+        }
+        if (!passGuardada) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Contraseña actualizada correctamente',
+                pass: ':-)'
+            });
+        }
+    });
+});
 
 // ==================================================================
 // Actualizamos los datos laborales estudio y experiencia del usuario
