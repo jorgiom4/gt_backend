@@ -8,6 +8,7 @@ var jwt = require('jsonwebtoken');
 var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
 var app = express();
 var Usuario = require('../../models/usuario');
+var Roles = require('../../models/role');
 
 // =============================================
 // Actualizamos los datos personales del usuario
@@ -314,24 +315,16 @@ app.put('/laboral', (req, res) => {
 
 // ==================================================
 // Actualizamos los datos de los titutlos del usuario
+// Se guardan todos los titulos en conjunto
 // ==================================================
 app.put('/titulo', (req, res) => {
 
     var body = req.body;
     var id = body.id;
-    var idT = body.titulos.idT;
-
-    var queryparam1 = '\"datos_laborales.titulos.0.nombre\"';
-    var queryparam2 = '\"datos_laborales.titulos.0.fecha\"';
-
-    console.log(queryparam1);
-    console.log(queryparam2);
-
+    
     Usuario.findByIdAndUpdate(id, {
-        $set: {
-            queryparam1: body.titulos.nombre,
-            queryparam2: body.titulos.fecha
-
+        $set: {            
+            'datos_laborales.titulos': body.titulos
         }
     }, (err, tituloGuardado) => {
         if (err) {
@@ -359,16 +352,39 @@ app.put('/titulo', (req, res) => {
 
 // ============================================
 // Actualizamos los datos de cursos del usuario
+// Se guardan todos los cursos en conjunto
 // ============================================
+app.put('/curso', (req, res) => {
 
-
-// ===============================
-// Actualizamos el rol del usuario
-// ===============================
-
-
-
-
-
+    var body = req.body;
+    var id = body.id;
+    
+    Usuario.findByIdAndUpdate(id, {
+        $set: {            
+            'datos_laborales.cursos': body.cursos
+        }
+    }, (err, cursoGuardado) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar curso del usuario',
+                errors: err
+            });
+        }
+        if (!cursoGuardado) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Curso actualizado correctamente',
+                curso: cursoGuardado
+            });
+        }
+    });
+});
 
 module.exports = app;

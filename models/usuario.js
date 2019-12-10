@@ -89,25 +89,31 @@ var usuarioSchema = new Schema({
     },
     datos_laborales: {
         estudios: {
-            type: String
+            type: String,
+            require: false
         },
         experiencia: {
-            type: String
+            type: String,
+            require: false
         },
         titulos: [{
             nombre: {
-                type: String
+                type: String,
+                require: false
             },
             fecha: {
-                type: String
+                type: String,
+                require: false
             }
         }],
         cursos: [{
             nombre: {
-                type: String
+                type: String,
+                require: false
             },
             fecha: {
-                type: Date
+                type: Date,
+                require: false
             }
         }]
     },
@@ -132,7 +138,7 @@ usuarioSchema.methods.toJSON = function() {
 
     var user = this;
     var userObject = user.toObject();
-    delete userObject.datos_personales.pass;
+    delete userObject.datos_acceso.pass;
 
     return userObject;
 };
