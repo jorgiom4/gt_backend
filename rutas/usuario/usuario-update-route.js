@@ -387,4 +387,90 @@ app.put('/curso', (req, res) => {
     });
 });
 
+// ===============================
+// Actualizamos el rol del usuario
+// ===============================
+app.put('/rol', (req, res) => {
+
+    var body = req.body;
+    var id = body.id;
+    var newRol = body.rol;
+
+    // Obtenemos primero los roles activos
+    var rolesDB = [];
+
+    Roles.find({}, (err, roles) => {
+        if(err){
+            return res.status(500).json({
+                ok: false,
+                err: 'Error al obtener los roles de DB ' + err
+            });
+        }else{
+            
+            // Nos quedamos con los nombres de los roles activos
+            roles.forEach(rol => {
+                if(rol.active){                    
+                    rolesDB.push(rol.nombre);                    
+                }                
+            });
+
+            console.log("Roles activos: " + rolesDB);
+
+            // Si tenemos los roles activos comprobamos que el rol que nos pasan está dentro de la lista de roles activos
+            if(rolesDB.length > 0){
+                var rol = rolesDB.indexOf(newRol);
+
+                console.log("Resultado de buscar el newRol en el array: " + rol);
+
+                if(rol >= 0){
+                    console.log("Rol a poner como nuevo: " + newRol);
+                    UpdateRol(id, newRol)
+                        .then(rol =>{
+                            return res.status(200).json({
+                                ok: true,
+                                mensaje: 'Rol actualizado correctamente: ' + newRol 
+                            }); 
+                        })
+                        .catch(err => {
+                            return res.status(500).json({
+                                ok: true,
+                                error: err
+                            }); 
+                        });            
+                }else{
+                    return res.status(500).json({
+                        ok: false,
+                        error: 'No se ha encontrado el rol a modificar: ' + newRol
+                    });    
+                }
+            }else{
+                return res.status(500).json({
+                    ok: false,
+                    error: 'No se han encontrado roles activos'
+                });    
+            }                        
+        }
+    });    
+});
+
+// Promesa encargada de actualizar el rol de un usuario
+function UpdateRol (id, rol) {
+
+    return new Promise((resolve, reject) => {
+
+        Usuario.findByIdAndUpdate(id, {
+            $set: {            
+                'role': rol
+            }
+        }, (err, rolGuardado) => {
+            if (err) {                    
+                reject('Error al actualizar el rol del usuario');
+            }else{             
+                resolve(rolGuardado);
+            } 
+        });
+    });
+
+};
+
 module.exports = app;

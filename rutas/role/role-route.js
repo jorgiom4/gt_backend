@@ -6,9 +6,9 @@ var app = express();
 var Role = require('../../models/role');
 
 
-// ==========================================
+// =======================
 // Obtener todos los roles
-// ==========================================
+// =======================
 app.get('/', (req, res) => {
 
     Role.find({})
@@ -33,9 +33,9 @@ app.get('/', (req, res) => {
             });
 });
 
-// ==========================================
+// ===================
 // Crear un nuevo rol
-// ==========================================
+// ===================
 app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
 
     var body = req.body;
@@ -71,29 +71,42 @@ app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
         });
 });
 
-// ===============================
-// Actualizamos el rol del usuario
-// ===============================
-app.put('/rol', (req, res) => {
+// ==============
+// Actualizar rol
+// ==============
+app.put('/', (req, res) => {
 
     var body = req.body;
     var id = body.id;
-
-    // Obtenemos primero los roles activos
-    var rolesDB;
     
-    Roles.find({}, (err, roles) => {
-        if(err){
+    Role.findByIdAndUpdate(id, {
+        $set: {            
+            'role.nombre': body.role.nombre,
+            'role.desc': body.role.desc,
+            'role.active': body.active
+        }
+    }, (err, rolGuardado) => {
+        if (err) {
             return res.status(500).json({
                 ok: false,
-                err: 'Error al obtener los roles de DB ' + err
+                mensaje: 'Error al actualizar Rol',
+                errors: err
             });
-        }else{
-            rolesDB = roles;
-            console.log("Roles en bsase de datos: " + rolesDB);
+        }
+        if (!rolGuardado) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado Rol con ID: ' + id,
+                error: 'No se ha encontrado Rol con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Rol actualizado correctamente',
+                rol: rolGuardado
+            });
         }
     });
-    
 });
 
 module.exports = app;
