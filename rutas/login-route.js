@@ -44,10 +44,8 @@ app.post('/', (req, res) => {
 
         res.status(200).json({
             ok: true,
-            usuario: usuarioDB,
             token: token,
-            id: usuarioDB._id,
-            expiredAt: token.expiredAt
+            id: usuarioDB._id
         });
 
     });

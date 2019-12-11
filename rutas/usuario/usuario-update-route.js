@@ -4,8 +4,7 @@
 
 var express = require('express');
 var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
-var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
+var { verificaToken } = require('../../middlewares/autenticacion');
 var app = express();
 var Usuario = require('../../models/usuario');
 var Roles = require('../../models/role');
@@ -14,7 +13,7 @@ var Roles = require('../../models/role');
 // Actualizamos los datos personales del usuario
 // Se guardan todos los datos en conjunto
 // =============================================
-app.put('/personales', (req, res) => {
+app.put('/personales', verificaToken, (req, res) => {
 
     var body = req.body;
     var id = body.id;
@@ -54,48 +53,48 @@ app.put('/personales', (req, res) => {
     });
 });
 
-// ============================================================================
+// ==============================================
 // Actualizamos los datos de contacto del usuario
-// Se guardan todos en conjunto por ahora no se puede modificar individualmente
-// ============================================================================
-app.put('/contacto', (req, res) => {
+// ==============================================
+app.put('/contacto', verificaToken, (req, res) => {
 
     var body = req.body;
     var id = body.id;
-    var contacto = body.contacto;
+    var idc = body.contacto.idc;
 
-    Usuario.findByIdAndUpdate(id, {
-        $set: {
-            "datos_personales.contacto": contacto
-        }
-    }, (err, contactoGuardado) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error al actualizar los datos personales',
-                errors: err
-            });
-        }
-        if (!contactoGuardado) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'No se ha encontrado usuario con ID: ' + id,
-                error: 'No se ha encontrado usuario con ID: ' + id
-            });
-        } else {
-            return res.status(200).json({
-                ok: true,
-                mensaje: 'Contacto actualizado correctamente',
-                contacto: contacto
-            });
-        }
-    });
+    var update = {
+        tlf: body.contacto.tlf
+    };
+
+    Usuario.updateOne({ "datos_personales.contacto._id": idc }, { $set: { "datos_personales.contacto.$": update } })
+        .exec((err, contactoActualizado) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al actualizar contacto',
+                    errors: err
+                });
+            }
+            if (!contactoActualizado) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'No se ha encontrado contacto con ID: ' + idcon,
+                    error: 'No se ha encontrado contacto con ID: ' + idcon
+                });
+            } else {
+                return res.status(200).json({
+                    ok: true,
+                    mensaje: 'Contacto actualizado correctamente',
+                    contacto: contactoActualizado
+                });
+            }
+        });
 });
 
 // ==================================
 // Actualizamos la imagen del usuario
 // ==================================
-app.put('/img', (req, res) => {
+app.put('/img', verificaToken, (req, res) => {
 
     var body = req.body;
     var id = body.id;
@@ -133,7 +132,7 @@ app.put('/img', (req, res) => {
 // Actualizamos los datos de ubicación del usuario
 // Se guardan los dos datos latitud y longuitud en conjunto
 // ========================================================
-app.put('/ubicacion', (req, res) => {
+app.put('/ubicacion', verificaToken, (req, res) => {
 
     var body = req.body;
     var id = body.id;
@@ -170,7 +169,7 @@ app.put('/ubicacion', (req, res) => {
 // ============================================
 // Actualizamos el email del usuario
 // ============================================
-app.put('/email', (req, res) => {
+app.put('/email', verificaToken, (req, res) => {
     var body = req.body;
     var id = body.id;
     var email = body.email;
@@ -206,7 +205,7 @@ app.put('/email', (req, res) => {
 // ==========================
 // Actualizamos la contraseña
 // ==========================
-app.put('/pass', (req, res) => {
+app.put('/pass', verificaToken, (req, res) => {
     var body = req.body;
     var id = body.id;
     var pass = body.pass;
@@ -242,7 +241,7 @@ app.put('/pass', (req, res) => {
 // =======================================
 // Actualizamos la descripción del usuario
 // =======================================
-app.put('/desc', (req, res) => {
+app.put('/desc', verificaToken, (req, res) => {
 
     var body = req.body;
     var id = body.id;
@@ -279,7 +278,7 @@ app.put('/desc', (req, res) => {
 // Actualizamos los datos laborales estudio y experiencia del usuario
 // Se guardan todos los datos en conjunto
 // ==================================================================
-app.put('/laboral', (req, res) => {
+app.put('/laboral', verificaToken, (req, res) => {
 
     var body = req.body;
     var id = body.id;
@@ -315,82 +314,86 @@ app.put('/laboral', (req, res) => {
 
 // ==================================================
 // Actualizamos los datos de los titutlos del usuario
-// Se guardan todos los titulos en conjunto
 // ==================================================
-app.put('/titulo', (req, res) => {
+app.put('/titulo', verificaToken, (req, res) => {
 
     var body = req.body;
-    var id = body.id;
-    
-    Usuario.findByIdAndUpdate(id, {
-        $set: {            
-            'datos_laborales.titulos': body.titulos
-        }
-    }, (err, tituloGuardado) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error al actualizar título del usuario',
-                errors: err
-            });
-        }
-        if (!tituloGuardado) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'No se ha encontrado usuario con ID: ' + id,
-                error: 'No se ha encontrado usuario con ID: ' + id
-            });
-        } else {
-            return res.status(200).json({
-                ok: true,
-                mensaje: 'Título actualizado correctamente',
-                titulo: tituloGuardado
-            });
-        }
-    });
+    var id = body.titulo.id;
+    var idt = body.titulo.idt;
+
+    var update = {
+        nombre: body.titulo.nombre,
+        fecha: body.titulo.fecha
+    };
+
+    Usuario.updateOne({ "_id": id, "datos_laborales.titulos._id": idt }, { $set: { "datos_laborales.titulos.$": update } })
+        .exec((err, tituloActualizado) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al actualizar título',
+                    errors: err
+                });
+            }
+            if (!tituloActualizado) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'No se ha encontrado título con ID: ' + id,
+                    error: 'No se ha encontrado título con ID: ' + id
+                });
+            } else {
+                return res.status(200).json({
+                    ok: true,
+                    mensaje: 'Título actualizado correctamente',
+                    titulo: tituloActualizado
+                });
+            }
+        });
 });
 
 // ============================================
 // Actualizamos los datos de cursos del usuario
-// Se guardan todos los cursos en conjunto
 // ============================================
-app.put('/curso', (req, res) => {
+app.put('/curso', verificaToken, (req, res) => {
 
     var body = req.body;
-    var id = body.id;
-    
-    Usuario.findByIdAndUpdate(id, {
-        $set: {            
-            'datos_laborales.cursos': body.cursos
-        }
-    }, (err, cursoGuardado) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error al actualizar curso del usuario',
-                errors: err
-            });
-        }
-        if (!cursoGuardado) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'No se ha encontrado usuario con ID: ' + id,
-                error: 'No se ha encontrado usuario con ID: ' + id
-            });
-        } else {
-            return res.status(200).json({
-                ok: true,
-                mensaje: 'Curso actualizado correctamente',
-                curso: cursoGuardado
-            });
-        }
-    });
+    var id = body.curso.id;
+    var idc = body.curso.idc;
+
+    var update = {
+        nombre: body.curso.nombre,
+        fecha: body.curso.fecha
+    };
+
+    Usuario.updateOne({ "_id": id, "datos_laborales.cursos._id": idc }, { $set: { "datos_laborales.cursos.$": update } })
+        .exec((err, cursoActualizado) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al actualizar curso',
+                    errors: err
+                });
+            }
+            if (!cursoActualizado) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'No se ha encontrado curso con ID: ' + id,
+                    error: 'No se ha encontrado curso con ID: ' + id
+                });
+            } else {
+                return res.status(200).json({
+                    ok: true,
+                    mensaje: 'Curso actualizado correctamente',
+                    curso: cursoActualizado
+                });
+            }
+        });
 });
 
 // ===============================
 // Actualizamos el rol del usuario
 // ===============================
-app.put('/rol', (req, res) => {
+app.put('/rol', verificaToken, (req, res) => {
 
     var body = req.body;
     var id = body.id;
@@ -400,74 +403,74 @@ app.put('/rol', (req, res) => {
     var rolesDB = [];
 
     Roles.find({}, (err, roles) => {
-        if(err){
+        if (err) {
             return res.status(500).json({
                 ok: false,
                 err: 'Error al obtener los roles de DB ' + err
             });
-        }else{
-            
+        } else {
+
             // Nos quedamos con los nombres de los roles activos
             roles.forEach(rol => {
-                if(rol.active){                    
-                    rolesDB.push(rol.nombre);                    
-                }                
+                if (rol.active) {
+                    rolesDB.push(rol.nombre);
+                }
             });
 
             console.log("Roles activos: " + rolesDB);
 
             // Si tenemos los roles activos comprobamos que el rol que nos pasan está dentro de la lista de roles activos
-            if(rolesDB.length > 0){
+            if (rolesDB.length > 0) {
                 var rol = rolesDB.indexOf(newRol);
 
                 console.log("Resultado de buscar el newRol en el array: " + rol);
 
-                if(rol >= 0){
+                if (rol >= 0) {
                     console.log("Rol a poner como nuevo: " + newRol);
                     UpdateRol(id, newRol)
-                        .then(rol =>{
+                        .then(rol => {
                             return res.status(200).json({
                                 ok: true,
-                                mensaje: 'Rol actualizado correctamente: ' + newRol 
-                            }); 
+                                mensaje: 'Rol actualizado correctamente: ' + newRol
+                            });
                         })
                         .catch(err => {
                             return res.status(500).json({
                                 ok: true,
                                 error: err
-                            }); 
-                        });            
-                }else{
+                            });
+                        });
+                } else {
                     return res.status(500).json({
                         ok: false,
                         error: 'No se ha encontrado el rol a modificar: ' + newRol
-                    });    
+                    });
                 }
-            }else{
+            } else {
                 return res.status(500).json({
                     ok: false,
                     error: 'No se han encontrado roles activos'
-                });    
-            }                        
+                });
+            }
         }
-    });    
+    });
 });
 
 // Promesa encargada de actualizar el rol de un usuario
-function UpdateRol (id, rol) {
+function UpdateRol(id, rol) {
 
     return new Promise((resolve, reject) => {
 
         Usuario.findByIdAndUpdate(id, {
-            $set: {            
+            $set: {
                 'role': rol
             }
         }, (err, rolGuardado) => {
-            if (err) {                    
+            if (err) {
                 reject('Error al actualizar el rol del usuario');
-            }else{             
+            } else {
                 resolve(rolGuardado);
-            } 
+            }
         });
     });
 

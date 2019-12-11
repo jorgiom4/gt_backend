@@ -78,9 +78,14 @@ app.put('/', (req, res) => {
 
     var body = req.body;
     var id = body.id;
+    var param = "nombre";
 
     //var params = "nombre: body.role.nombre, desc: body.role.desc, active: body.role.active";
-    var update = { nombre: body.role.nombre, desc: body.role.desc, active: body.role.active };
+    var update = {
+        nombre: body.role.nombre,
+        desc: body.role.desc,
+        active: body.role.active
+    };
 
     Role.updateOne({ _id: id }, { $set: update })
         .exec((err, rolActualizado) => {
