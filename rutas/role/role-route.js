@@ -9,7 +9,7 @@ var Role = require('../../models/role');
 // =======================
 // Obtener todos los roles
 // =======================
-app.get('/', (req, res) => {
+app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
 
     Role.find({})
         .exec(
@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 // ===================
 // Crear un nuevo rol
 // ===================
-app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
+app.post('/',[verificaToken, verificaAdminRole], (req, res) => {
 
     var body = req.body;
 
@@ -74,7 +74,7 @@ app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
 // ==============
 // Actualizar rol
 // ==============
-app.put('/', (req, res) => {
+app.put('/',[verificaToken, verificaAdminRole], (req, res) => {
 
     var body = req.body;
     var id = body.id;

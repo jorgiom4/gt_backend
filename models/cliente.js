@@ -78,4 +78,4 @@ var clienteSchema = new Schema({
 });
 
 clienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
-module.exports = mongoose.model('Cliente', clienteSchema);
+module.exports = mongoose.model('clientes', clienteSchema);

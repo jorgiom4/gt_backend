@@ -113,6 +113,11 @@ app.post('/', (req, res) => {
         })
         .catch(err => {
             console.log(err);
+            res.status(500).json({
+                ok: false,
+                mensaje: 'Usuario no registrado o no es válido',
+                error: err
+            });
         });
 
 });
@@ -278,7 +283,11 @@ function buscarUsuarioByEmail(email, regex) {
 
                 if (err) {
                     reject('Error al buscar el usuario con email: ' + email + '', err);
-                } else {
+                }                
+                if(!usuario){
+                    reject('No se ha encontrado un usuario registrado con email válido: ' + email + '', err);
+                }else {
+                    console.log("buscarUsuarioByEmail: " + usuario);
                     resolve(usuario);
                 }
             });

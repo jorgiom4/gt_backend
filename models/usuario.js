@@ -138,10 +138,10 @@ usuarioSchema.methods.toJSON = function() {
 
     var user = this;
     var userObject = user.toObject();
-    delete userObject.datos_acceso.pass;
+    //delete userObject.datos_acceso.pass;
 
     return userObject;
 };
 
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
-module.exports = mongoose.model('Usuario', usuarioSchema);
+module.exports = mongoose.model('usuarios', usuarioSchema);
