@@ -12,27 +12,27 @@ var RegistroUsuarios = require('../../models/new-user');
 // ========================================================
 // Obtener todos los clientes filtrado por datos personales
 // ========================================================
-app.get('/',[verificaToken, verificaAdminRole], (req, res) => {
+app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
 
     Cliente.find({}, 'datos_personales')
-    .exec(
-        (err, clientes) => {
+        .exec(
+            (err, clientes) => {
 
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    mensaje: 'Error cargando clientes',
-                    errors: err
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        mensaje: 'Error cargando clientes',
+                        errors: err
+                    });
+                }
+
+                console.log("Recibiendo listado de clientes");
+                console.log(clientes);
+                res.status(200).json({
+                    ok: true,
+                    clientes: clientes
                 });
-            }
-
-            console.log("Recibiendo listado de clientes");
-            console.log(clientes);
-            res.status(200).json({
-                ok: true,
-                clientes: clientes
-            });
-        })
+            })
 
 });
 
@@ -44,8 +44,8 @@ app.post('/', (req, res) => {
     var body = req.body;
     var email = body.datos_acceso.email;
 
-        // Primero comprobamos que el usuario tiene validado el email
-        buscarClienteByEmail(email)
+    // Primero comprobamos que el usuario tiene validado el email
+    buscarClienteByEmail(email)
         .then(usuario => {
 
             // Comprobamos que hemos encontrado el usuario en usuarios registrados
@@ -72,9 +72,6 @@ app.post('/', (req, res) => {
                         pass: String
                     };
 
-                    clienteLogin.email = body.datos_acceso.email;
-                    clienteLogin.pass = bcrypt.hashSync(body.datos_acceso.pass, 10);
-
                     //Obtenemos la fecha de insercion en formato IsoDate
                     var fecha = new Date();
                     var isoDate = fecha.toISOString();
@@ -82,7 +79,10 @@ app.post('/', (req, res) => {
                     var cliente = new Cliente({
                         datos_personales: body.datos_personales,
                         ubicacion: body.ubicacion,
-                        datos_acceso: clienteLogin,
+                        datos_acceso: {
+                            email: usuario.email,
+                            pass: usuario.pass
+                        },
                         desc: body.desc,
                         datos_laborales: body.datos_laborales,
                         role: body.role,
@@ -133,10 +133,10 @@ function buscarClienteByEmail(email) {
 
                 if (err) {
                     reject('Error al buscar el usuario con email: ' + email + '', err);
-                }                
-                if(!usuario){
+                }
+                if (!usuario) {
                     reject('No se ha encontrado un usuario registrado con email válido: ' + email + '', err);
-                }else {
+                } else {
                     console.log("buscarUsuarioByEmail: " + usuario);
                     resolve(usuario);
                 }

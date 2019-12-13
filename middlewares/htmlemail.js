@@ -18,9 +18,9 @@ exports.getHtmlForRegisterUserEmail = (enlace) => {
     
         <h3>Gracias por registrarte en la plataforma de Geretronic</h3>
         <h4>Antes de poder sacar el máximo partido a Geritronic es necesario validar el correo electróinco que nos has facilitado en el proceso de registro</h4>
-        <h5>Haz click aquí para proceder a su validación</h5>
+        <h5>Haz click Validar email para proceder a su validación</h5>
         <h5>En caso de no redirigir a nuestra página de validación, copia y pega en un navegador web el siguiente enlace</h5>
-        <h6>{link}</h6>
+        <h6><a href="{link}">Validar email</a></h6>
     
     </body>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
