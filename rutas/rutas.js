@@ -9,6 +9,8 @@ var validateEmailRuta = require('../rutas/resgister/validate-email-route');
 var usuarioRuta = require('../rutas/usuario/usuario-route');
 var usuarioUpdateRuta = require('../rutas/usuario/usuario-update-route');
 
+var clienteRuta = require('../rutas/cliente/cliente-route');
+
 var roleRuta = require('../rutas/role/role-route');
 
 var loginRuta = require('../rutas/login-route');
@@ -21,6 +23,9 @@ app.use('/register/validatemail', validateEmailRuta);
 // Rutas de usuario
 app.use('/usuario', usuarioRuta);
 app.use('/usuario/update', usuarioUpdateRuta);
+
+// Rutas de cliente
+app.use('/cliente', clienteRuta);
 
 // Rutas para los roles
 app.use('/role', roleRuta);

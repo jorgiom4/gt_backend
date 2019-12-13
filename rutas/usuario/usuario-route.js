@@ -1,7 +1,6 @@
 // ==============================================================
 // Rutas para la creación y actualización de los datos de usuario
 // ==============================================================
-
 var express = require('express');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
@@ -36,9 +35,9 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
             })
 });
 
-// ==========================================
+// ======================
 // Crear un nuevo usuario
-// ==========================================
+// ======================
 app.post('/', (req, res) => {
 
     var body = req.body;
