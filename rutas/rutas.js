@@ -10,6 +10,7 @@ var usuarioRuta = require('../rutas/usuario/usuario-route');
 var usuarioUpdateRuta = require('../rutas/usuario/usuario-update-route');
 
 var clienteRuta = require('../rutas/cliente/cliente-route');
+var clienteUpdateRuta = require('../rutas/cliente/cliente-update-route');
 
 var roleRuta = require('../rutas/role/role-route');
 
@@ -26,6 +27,7 @@ app.use('/usuario/update', usuarioUpdateRuta);
 
 // Rutas de cliente
 app.use('/cliente', clienteRuta);
+app.use('/cliente/update', clienteUpdateRuta);
 
 // Rutas para los roles
 app.use('/role', roleRuta);

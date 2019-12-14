@@ -26,8 +26,8 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
                     });
                 }
 
-                console.log("Recibiendo listado de usuarios");
-                console.log(usuarios);
+                //console.log("Recibiendo listado de usuarios");
+                //console.log(usuarios);
                 res.status(200).json({
                     ok: true,
                     usuarios: usuarios
@@ -282,10 +282,10 @@ function buscarUsuarioByEmail(email, regex) {
 
                 if (err) {
                     reject('Error al buscar el usuario con email: ' + email + '', err);
-                }                
-                if(!usuario){
+                }
+                if (!usuario) {
                     reject('No se ha encontrado un usuario registrado con email válido: ' + email + '', err);
-                }else {
+                } else {
                     console.log("buscarUsuarioByEmail: " + usuario);
                     resolve(usuario);
                 }

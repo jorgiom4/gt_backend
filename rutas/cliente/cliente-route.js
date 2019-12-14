@@ -26,13 +26,13 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
                     });
                 }
 
-                console.log("Recibiendo listado de clientes");
-                console.log(clientes);
+                //console.log("Recibiendo listado de clientes");
+                //console.log(clientes);
                 res.status(200).json({
                     ok: true,
                     clientes: clientes
                 });
-            })
+            });
 
 });
 
