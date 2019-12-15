@@ -71,7 +71,7 @@ app.put('/contacto', verificaToken, (req, res) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al actualizar contacto',
+                    mensaje: 'Error al actualizar contacto del usuario',
                     errors: err
                 });
             }

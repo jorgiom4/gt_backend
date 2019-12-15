@@ -1,3 +1,6 @@
+// ==============================================================
+// Endpoint para realizar el login de un usuario/cliente con JWT
+// ==============================================================
 var express = require('express');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
@@ -5,7 +8,6 @@ var SEED = require('../config/config').SEED;
 var app = express();
 var Usuario = require('../models/usuario');
 var Cliente = require('../models/cliente');
-var util = require('util');
 
 app.post('/', (req, res) => {
 
@@ -52,8 +54,6 @@ app.post('/', (req, res) => {
             entidad.email = clienteDB.datos_acceso.email;
             entidad.role = clienteDB.role;
 
-            console.log("\nLogin Cliente - Entidad a guardad en JWT: " + util.inspect(entidad));
-
             var token = jwt.sign({ entidad: entidad }, SEED, { expiresIn: 3000 }); // 50 minutos
 
             res.status(200).json({
@@ -95,8 +95,6 @@ app.post('/', (req, res) => {
             entidad.id = usuarioDB._id;
             entidad.email = usuarioDB.datos_acceso.email;
             entidad.role = usuarioDB.role;
-
-            console.log("\nLogin Usuario - Entidad a guardad en JWT: " + util.inspect(entidad));
 
             var token = jwt.sign({ entidad: entidad }, SEED, { expiresIn: 3000 }); // 50 minutos
 

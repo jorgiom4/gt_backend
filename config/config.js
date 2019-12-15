@@ -1,7 +1,8 @@
 // ===========
 // Semilla JWT
 // ===========
-module.exports.SEED = 'este-es-un-seed-dificil';
+//module.exports.SEED = 'este-es-un-seed-dificil';
+module.exports.SEED = 'P.B_@ptBh_;BQ9((|CUG/aHg¿HT4S#3PKsx0Y&RSNaoz{U;gY7';
 
 // ==========================================
 // URL DB Mongo (desarrollo, produccion VPS)

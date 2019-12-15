@@ -1,3 +1,6 @@
+// ===================================================================
+// Middleware para la validación del token JWT y del rol administrador
+// ===================================================================
 var jwt = require('jsonwebtoken');
 var SEED = require('../config/config').SEED;
 var util = require('util');
