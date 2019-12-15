@@ -165,5 +165,79 @@ app.put('/ubicacion', verificaToken, (req, res) => {
     });
 });
 
+// ============================================================
+// Actualizamos el email del cliente
+// Lo hacemos en la tabla de cliente y en la tabla de registro
+// ============================================================
+app.put('/email', verificaToken, (req, res) => {
+    var body = req.body;
+    var id = body.id;
+    var email = body.email;
+
+    // Actualizamos primero en la tabla de clientes
+    Cliente.findByIdAndUpdate(id, {
+        $set: {
+            "datos_acceso.email": email
+        }
+    }, (err, emailGuardado) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar el email del cliente',
+                errors: err
+            });
+        }
+        if (!emailGuardado) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id,
+                email: emailGuardado
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Email actualizado correctamente',
+                email: email
+            });
+        }
+    });
+});
+
+// ==========================
+// Actualizamos la contraseña
+// ==========================
+app.put('/pass', verificaToken, (req, res) => {
+    var body = req.body;
+    var id = body.id;
+    var pass = body.pass;
+
+    Cliente.findByIdAndUpdate(id, {
+        $set: {
+            "datos_acceso.pass": bcrypt.hashSync(pass, 10)
+        }
+    }, (err, passGuardada) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar la contraseña del cliente',
+                errors: err
+            });
+        }
+        if (!passGuardada) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Contraseña actualizada correctamente',
+                pass: ':-)'
+            });
+        }
+    });
+});
 
 module.exports = app;

@@ -121,27 +121,4 @@ app.post('/', (req, res) => {
 
 });
 
-// =================================
-// Buscamos usuario por el email
-// =================================
-function buscarClienteByEmail(email) {
-
-    return new Promise((resolve, reject) => {
-
-        RegistroUsuarios.findOne({ email: email })
-            .exec((err, usuario) => {
-
-                if (err) {
-                    reject('Error al buscar el usuario con email: ' + email + '', err);
-                }
-                if (!usuario) {
-                    reject('No se ha encontrado un usuario registrado con email válido: ' + email + '', err);
-                } else {
-                    console.log("buscarUsuarioByEmail: " + usuario);
-                    resolve(usuario);
-                }
-            });
-    });
-}
-
 module.exports = app;
