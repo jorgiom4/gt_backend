@@ -94,6 +94,9 @@ function buscarUsuarioById(id) {
 
                 if (err) {
                     reject('Error al buscar el usuario con id: ' + id + '', err);
+                }
+                if (Object.keys(usuario).length <= 0) {
+                    reject('No se ha encontrado usuario con id: ' + id);
                 } else {
                     resolve(usuario);
                 }
@@ -113,6 +116,9 @@ function buscarUsuarioByDni(dni) {
 
                 if (err) {
                     reject('Error al buscar el usuario con dni: ' + dni + '', err);
+                }
+                if (Object.keys(usuario).length <= 0) {
+                    reject('No se ha encontrado usuario con dni: ' + dni);
                 } else {
                     resolve(usuario);
                 }
@@ -131,6 +137,9 @@ function buscarUsuarioByName(nombre, regex) {
 
                 if (err) {
                     reject('Error al buscar el usuario con nombre: ' + nombre + '', err);
+                }
+                if (Object.keys(usuario).length <= 0) {
+                    reject('No se ha encontrado usuario con nombre: ' + nombre);
                 } else {
                     resolve(usuarios);
                 }
@@ -138,9 +147,9 @@ function buscarUsuarioByName(nombre, regex) {
     });
 }
 
-// =================================
+// ============================
 // Buscamos usuario por el tlf
-// =================================
+// ============================
 function buscarUsuarioByTlf(tlf, regex) {
     return new Promise((resolve, reject) => {
 
@@ -149,6 +158,9 @@ function buscarUsuarioByTlf(tlf, regex) {
 
                 if (err) {
                     reject('Error al buscar el usuario con tlf: ' + tlf + '', err);
+                }
+                if (Object.keys(usuario).length <= 0) {
+                    reject('No se ha encontrado usuario con tlf: ' + tlf);
                 } else {
                     resolve(usuarios);
                 }
@@ -231,10 +243,10 @@ function buscarUsuarioByLoca(loca, regex) {
 // =================================
 // Buscamos usuario por el email
 // =================================
-function buscarUsuarioByEmail(email, regex) {
+function buscarUsuarioByEmail(email) {
     return new Promise((resolve, reject) => {
 
-        Usuario.find({ email: regex })
+        Usuario.find({ email: email })
             .exec((err, usuarios) => {
 
                 if (err) {
