@@ -456,6 +456,43 @@ app.put('/rol', verificaToken, (req, res) => {
     });
 });
 
+// ==================================
+// Actualizamos el estado del usuario
+// ==================================
+app.put('/active', verificaToken, (req, res) => {
+
+    var body = req.body;
+    var id = body.id;    
+
+    Usuario.findByIdAndUpdate(id, {
+        $set: {
+            "active": body.active            
+        }
+    }, (err, estadoGuardado) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al actualizar el estado del usuario',
+                errors: err
+            });
+        }
+        if (!estadoGuardado) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se ha encontrado usuario con ID: ' + id,
+                error: 'No se ha encontrado usuario con ID: ' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                mensaje: 'Estado actualizado correctamente',
+                active: body.active
+            });
+        }
+    });
+});
+
+
 // Promesa encargada de actualizar el rol de un usuario
 function UpdateRol(id, rol) {
 

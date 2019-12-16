@@ -1,9 +1,9 @@
 /*
 Endpoint para búsquedas de usuarios
+Sólo los administradores podrán hacer uso
 */
 var express = require('express');
-var jwt = require('jsonwebtoken');
-var mdAutenticacion = require('../../middlewares/autenticacion');
+var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
 var app = express();
 var Usuario = require('../../models/usuario');
 
@@ -11,7 +11,7 @@ var Usuario = require('../../models/usuario');
 // Buscar Usuario por campo y término, los campos podrán ser id, dni, nombe, apellido, 
 // dirección, localidad, ciudad, cp, activos, por un determinado rol
 // ====================================================================================
-app.get('/', (req, res) => {
+app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
 
     var body = req.body;
     var campo = body.campo;
