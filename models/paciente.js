@@ -10,6 +10,10 @@ var Schema = mongoose.Schema;
 
 var pacienteSchema = new Schema({
     datos_personales: {
+        idCliente: {
+            type: Schema.ObjectId,
+            required: [true, 'El identificador del cliente es obligatorio']
+        },
         nombre: {
             type: String,
             required: [true, 'El nombre del cliente es necesario']
@@ -23,6 +27,10 @@ var pacienteSchema = new Schema({
             required: [true, 'El DNI es necesario.']
         },
         contacto: [{
+            nombre: {
+                type: String,
+                required: [true, 'El nombre del contacto es obligatorio']
+            },
             tlf: {
                 type: String,
                 unique: true,
@@ -58,24 +66,18 @@ var pacienteSchema = new Schema({
             type: String, // H: Hombre, M: Mujer
             required: true
         },
-        contactosEmer: [{
-            nombre: {
-                type: String
-            },
-            tlf: {
-                type: String
-            }
-        }],
         tlfEmerSanitaria: {
             type: String,
             default: '112'
         },
         numSegSocial: {
             type: String,
+            require: false,
             unique: true
         },
         segMedico: {
-            type: String
+            type: String,
+            require: false
         },
         tlfSegMedico: {
             type: String,
@@ -83,21 +85,32 @@ var pacienteSchema = new Schema({
             default: "NONE"
         },
         numTarSanitaria: {
-            type: String
+            type: String,
+            require: false
         },
         grpSanguineo: {
             type: String,
-            required: [true, 'El grupo sanguineo es obligatorio']
+            required: false,
+            default: 'NONE'
         },
-        observaciones: [{ //Se puede poner algun tipo de alergias
+        "observaciones": [{ //Se puede poner algun tipo de alergias
             observ: {
-                type: String
+                type: String,
+                require: false,
+                default: 'NONE'
             },
             fecha: {
                 type: Date,
+                required: false
             }
         }]
-    },    
+    },
+    datos_enfermedades: [{
+        idE: {
+            type: Schema.ObjectId,
+            required: false
+        }
+    }],
     dateAdd: {
         type: Date,
         required: [true, 'La fecha de alta en necesaria.']
@@ -108,9 +121,9 @@ var pacienteSchema = new Schema({
     },
     active: {
         type: Boolean,
-        reuired: [true,'El estado del paciente es necesario']
+        reuired: [true, 'El estado del paciente es necesario']
     }
 });
 
-clienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
-module.exports = mongoose.model('Paciente', pacienteSchema);
+pacienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
+module.exports = mongoose.model('pacientes', pacienteSchema);
