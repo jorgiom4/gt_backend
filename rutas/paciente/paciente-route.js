@@ -98,6 +98,43 @@ app.post('/', verificaToken, (req, res) => {
 });
 
 
+// ==================================================
+// Desactivamos cliente por su ID cambiando el estado
+// ==================================================
+app.put('/', [verificaToken, verificaAdminRole], (req, res) => {
+
+    var id = req.body.id;
+
+    console.log("Dentro de desactivar paciente id: " + id);
+
+    Paciente.findByIdAndUpdate(id, {
+        $set: {
+            "active": false
+        }
+    }, (err, paciente) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                error: 'Error al actualizar el estado del paciente:' + id + " " + err
+            });
+        }
+        if (Object.keys(paciente).length <= 0) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'No se encontrado paciente con ID:' + id
+            });
+        } else {
+            return res.status(200).json({
+                ok: true,
+                error: 'Estado actualizado correctamente para el paciente: ' + id
+            });
+        }
+    });
+
+
+});
+
+
 // ==========================
 // Buscamos cliente por su ID
 // ==========================

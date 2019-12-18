@@ -1,7 +1,6 @@
 // ===================================================
 // Rutas para la actualización de los datos de usuario
 // ===================================================
-
 var express = require('express');
 var bcrypt = require('bcryptjs');
 var { verificaToken } = require('../../middlewares/autenticacion');
@@ -462,11 +461,11 @@ app.put('/rol', verificaToken, (req, res) => {
 app.put('/active', verificaToken, (req, res) => {
 
     var body = req.body;
-    var id = body.id;    
+    var id = body.id;
 
     Usuario.findByIdAndUpdate(id, {
         $set: {
-            "active": body.active            
+            "active": body.active
         }
     }, (err, estadoGuardado) => {
         if (err) {

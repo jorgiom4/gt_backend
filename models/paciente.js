@@ -95,7 +95,7 @@ var pacienteSchema = new Schema({
             required: false,
             default: 'NONE'
         },
-        "observaciones": [{ //Se puede poner algun tipo de alergias
+        observaciones: [{ //Se puede poner algun tipo de alergias
             observ: {
                 type: String,
                 require: false,
