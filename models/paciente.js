@@ -1,6 +1,8 @@
 /**
  * Pacientes.
  * Schema para los pacientes.
+ * Nota: Los pacientes no disponen de usuario/contraseña para acceder a la aplicación
+ * Se entiende que al ser personas dependientes deberían de estar supervisados
  */
 
 var mongoose = require('mongoose');

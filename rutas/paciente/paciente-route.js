@@ -2,8 +2,6 @@
 // Rutas para la creación y actualización de los datos de paciente
 // ===============================================================
 var express = require('express');
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
 var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
 var app = express();
 var Paciente = require('../../models/paciente');
