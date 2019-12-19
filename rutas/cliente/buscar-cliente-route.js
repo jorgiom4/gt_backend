@@ -82,8 +82,6 @@ function buscarClienteById(id) {
 
     return new Promise((resolve, reject) => {
 
-        console.log("Dentro de buscarClienteById id: " + id);
-
         Cliente.findById(id)
             .exec((err, cliente) => {
 
@@ -92,8 +90,7 @@ function buscarClienteById(id) {
                 }
                 if (Object.keys(cliente).length <= 0) {
                     reject('No se ha encontrado Cliente con id: ' + id);
-                } else {
-                    console.log("Datos de cliente por id: " + cliente);
+                } else {                    
                     resolve(cliente);
                 }
             });

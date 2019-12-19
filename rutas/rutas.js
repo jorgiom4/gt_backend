@@ -16,6 +16,7 @@ var clienteBuscarRuta = require('../rutas/cliente/buscar-cliente-route');
 
 var pacienteRuta = require('../rutas/paciente/paciente-route');
 var pacienteUpdateRuta = require('../rutas/paciente/paciente-update-route');
+var pacienteBuscarRuta = require('../rutas/paciente/buscar-paciente-route');
 
 var enfermedadRuta = require('../rutas/enfermedad/enfermedad-route');
 
@@ -41,6 +42,7 @@ app.use('/cliente/buscar', clienteBuscarRuta);
 // Rutas de paciente
 app.use('/paciente', pacienteRuta);
 app.use('/paciente/update', pacienteUpdateRuta);
+app.use('/paciente/buscar', pacienteBuscarRuta);
 
 // Rutas para las enfermedades
 app.use('/enfermedad', enfermedadRuta);
