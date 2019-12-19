@@ -90,7 +90,7 @@ function buscarClienteById(id) {
                 }
                 if (Object.keys(cliente).length <= 0) {
                     reject('No se ha encontrado Cliente con id: ' + id);
-                } else {                    
+                } else {
                     resolve(cliente);
                 }
             });
@@ -305,7 +305,7 @@ function buscarClienteActive(active) {
                     reject('Error al buscar cliente activo: ' + active + '', err);
                 }
                 if (Object.keys(cliente).length <= 0) {
-                    reject('No se ha encontrado Cliente activo: ' + activo);
+                    reject('No se ha encontrado Cliente activo: ' + active);
                 } else {
                     resolve(cliente);
                 }
