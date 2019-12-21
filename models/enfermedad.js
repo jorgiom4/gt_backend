@@ -9,41 +9,38 @@ var uniqueValidator = require('mongoose-unique-validator');
 var Schema = mongoose.Schema;
 
 var enfermedadSchema = new Schema({
-    datos_enfermedad: {
-        idPaciente: { // Identificador del paciente al que pertenece la enfermedad
-            type: String,
-            unique: false,
-            required: [true, 'El identificador del paciente es obligatorio']
+    idPaciente: { // Identificador del paciente al que pertenece la enfermedad
+        type: String,
+        unique: false,
+        required: [true, 'El identificador del paciente es obligatorio']
+    },
+    enfermedad: {
+        type: String,
+        require: [true, 'El nombre de la enfermedad es obligatorio']
+    },
+    fechaEnfermedad: {
+        type: Date,
+        required: false
+    },
+    fechaCuracion: {
+        type: Date,
+        required: false
+    },
+    hospitalizacion: [{
+        ingreso: {
+            type: Date,
+            require: false
         },
-        enfermedad: {
+        hospital: {
             type: String,
-            required: false,
+            require: false,
             default: 'NONE'
         },
-        fechaEnfermedad: {
+        alta: {
             type: Date,
-            required: false
+            require: false
         },
-        fechaCuracion: {
-            type: Date,
-            required: false
-        },
-        hospitalizacion: [{
-            ingreso: {
-                type: Date,
-                require: false
-            },
-            hospital: {
-                type: String,
-                require: false,
-                default: 'NONE'
-            },
-            alta: {
-                type: Date,
-                require: false
-            }
-        }],
-    },
+    }],
     datos_medico: [{
         nombre: {
             type: String,
@@ -53,10 +50,24 @@ var enfermedadSchema = new Schema({
             type: String,
             require: [true, 'El número de colegiado del médidco es obligatorio']
         },
-        dateAdd: {
+    }],
+    tratamiento: [{
+        nombre: {
+            type: String,
+            require: [true, 'El nombre del tratamiento es obligatorio']
+        },
+        comienzo: {
             type: Date,
-            require: [true, 'Fecha de asignación del médico es obligatorio']
-        }
+            require: [true, 'La fecha de comienzo del tratamiento es obligatorio']
+        },
+        final: {
+            type: Date,
+            require: [true, 'La fecha de fin del tratamiento es obligatorio']
+        },
+        desc: {
+            type: String,
+            require: [true, 'La descripción del tratamiento es obligatorio']
+        },
     }],
     dateAdd: {
         type: Date,
