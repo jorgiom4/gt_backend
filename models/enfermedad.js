@@ -40,6 +40,11 @@ var enfermedadSchema = new Schema({
             type: Date,
             require: false
         },
+        coment: {
+            type: String,
+            require: false,
+            default: "NONE"
+        }
     }],
     datos_medico: [{
         nombre: {
@@ -50,6 +55,11 @@ var enfermedadSchema = new Schema({
             type: String,
             require: [true, 'El número de colegiado del médidco es obligatorio']
         },
+        coment: {
+            type: String,
+            require: false,
+            default: "NONE"
+        }
     }],
     tratamiento: [{
         nombre: {
