@@ -1,10 +1,13 @@
+// ===================================================================
+// Middleware para la validación del token JWT y del rol administrador
+// ===================================================================
 var jwt = require('jsonwebtoken');
 var SEED = require('../config/config').SEED;
+var util = require('util');
 
-
-// ==========================================
+// ================
 //  Verificar token
-// ==========================================
+// ================
 exports.verificaToken = (req, res, next) => {
 
     var token = req.get('token');
@@ -19,29 +22,30 @@ exports.verificaToken = (req, res, next) => {
             });
         }
 
-        req.usuario = decoded.usuario;
+        req.datos = decoded;
 
         next();
 
     });
 
-}
+};
 
-// ==========================================
+// ====================
 //  Verificar admin rol
-// ==========================================
+// ====================
 exports.verificaAdminRole = (req, res, next) => {
 
-    var usuario = req.usuario;
+    var datos = req.datos;
 
-    if(usuario.role === "ADMIN_ROL"){
+    if (datos.entidad.role === "ADMIN_ROL") {
         next();
-    }else{
+    } else {
         return res.status(401).json({
             ok: false,
             err: {
-                mensaje: 'El usuario no es administrador'
+                mensaje: 'El ' + datos.entidad.role + ' no es administrador'
             }
         });
+
     }
 };

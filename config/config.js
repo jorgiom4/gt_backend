@@ -1,13 +1,23 @@
 // ===========
 // Semilla JWT
 // ===========
-module.exports.SEED = 'este-es-un-seed-dificil';
+//module.exports.SEED = 'este-es-un-seed-dificil';
+module.exports.SEED = 'P.B_@ptBh_;BQ9((|CUG/aHg¿HT4S#3PKsx0Y&RSNaoz{U;gY7';
 
 // ==========================================
 // URL DB Mongo (desarrollo, produccion VPS)
 // ==========================================
 //module.exports.urlDB = 'mongodb://localhost:27017/geritronic_dev1';
 module.exports.urlDB = 'mongodb://admin:admin@instancia2.com:27017/geritronic_dev1';
+
+// ============
+// Server/Port
+// ============
+module.exports.SERVER_HOST_DEV = 'http://localhost:';
+module.exports.SERVER_HOST_DEV_PORT = 3000;
+module.exports.SERVER_HOST_PROD = 'http://instancia2.com:';
+module.exports.SERVER_HOST_PROD_PORT = 4200;
+
 
 // ============
 // Mail Service

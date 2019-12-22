@@ -57,10 +57,12 @@ var clienteSchema = new Schema({
     },
     ubicacion: {
         lat: {
-            type: String
+            type: String,
+            require: false
         },
         lon: {
-            type: String
+            type: String,
+            require: false
         }
     },
     datos_acceso: {
@@ -73,9 +75,31 @@ var clienteSchema = new Schema({
             type: String,
             required: [true, 'El password es necesario.']
         }
+    },
+    role: {
+        type: String,
+        required: [true, 'El rol en obligatorio']
+    },
+    active: {
+        type: Boolean,
+        required: ['El estado del cliente es obligatorio']
+    },
+    dateAdd: {
+        type: Date,
+        required: [true, 'La fecha de creación es obligatoria']
     }
 
 });
 
+//Creamos un objeto cliente con los campos que necesitamos para visualización
+clienteSchema.methods.toJSON = function() {
+
+    var cliente = this;
+    var clienteObject = cliente.toObject();
+    delete clienteObject.datos_acceso.pass;
+
+    return clienteObject;
+};
+
 clienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
-module.exports = mongoose.model('Cliente', clienteSchema);
+module.exports = mongoose.model('clientes', clienteSchema);

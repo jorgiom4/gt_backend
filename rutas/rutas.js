@@ -8,6 +8,19 @@ var validateEmailRuta = require('../rutas/resgister/validate-email-route');
 
 var usuarioRuta = require('../rutas/usuario/usuario-route');
 var usuarioUpdateRuta = require('../rutas/usuario/usuario-update-route');
+var usuarioBuscarRuta = require('../rutas/usuario/buscar-usuario-route');
+
+var clienteRuta = require('../rutas/cliente/cliente-route');
+var clienteUpdateRuta = require('../rutas/cliente/cliente-update-route');
+var clienteBuscarRuta = require('../rutas/cliente/buscar-cliente-route');
+
+var pacienteRuta = require('../rutas/paciente/paciente-route');
+var pacienteUpdateRuta = require('../rutas/paciente/paciente-update-route');
+var pacienteBuscarRuta = require('../rutas/paciente/buscar-paciente-route');
+
+var enfermedadRuta = require('../rutas/enfermedad/enfermedad-route');
+var enfermedadUpdateRuta = require('../rutas/enfermedad/enfermedad-update-route');
+var enfermedadBuscarRuta = require('../rutas/enfermedad/buscar-enfermedad-route');
 
 var roleRuta = require('../rutas/role/role-route');
 
@@ -21,6 +34,22 @@ app.use('/register/validatemail', validateEmailRuta);
 // Rutas de usuario
 app.use('/usuario', usuarioRuta);
 app.use('/usuario/update', usuarioUpdateRuta);
+app.use('/usuario/buscar', usuarioBuscarRuta);
+
+// Rutas de cliente
+app.use('/cliente', clienteRuta);
+app.use('/cliente/update', clienteUpdateRuta);
+app.use('/cliente/buscar', clienteBuscarRuta);
+
+// Rutas de paciente
+app.use('/paciente', pacienteRuta);
+app.use('/paciente/update', pacienteUpdateRuta);
+app.use('/paciente/buscar', pacienteBuscarRuta);
+
+// Rutas para las enfermedades
+app.use('/enfermedad', enfermedadRuta);
+app.use('/enfermedad/update', enfermedadUpdateRuta);
+app.use('/enfermedad/buscar', enfermedadBuscarRuta);
 
 // Rutas para los roles
 app.use('/role', roleRuta);

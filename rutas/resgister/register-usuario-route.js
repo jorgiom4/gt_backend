@@ -51,7 +51,7 @@ app.post('/', (req, res) => {
         }
 
         //Componemos y enviamos el mail para validación del email del usuario
-        var enlace = "";
+        var enlace = "http://localhost:3000/register/validatemail/" + random;
 
         var texto = htmlEmail.getHtmlForRegisterUserEmail(enlace);
         //console.log("Registrando nuevo usuario, texto html: " + texto);
