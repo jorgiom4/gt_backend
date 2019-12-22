@@ -8,6 +8,10 @@ var uniqueValidator = require('mongoose-unique-validator');
 
 var Schema = mongoose.Schema;
 
+// Componemos la fecha actual en formato ISODate
+var fecha = new Date();
+var isoDate = fecha.toISOString();
+
 var enfermedadSchema = new Schema({
     idPaciente: { // Identificador del paciente al que pertenece la enfermedad
         type: String,
@@ -44,6 +48,11 @@ var enfermedadSchema = new Schema({
             type: String,
             require: false,
             default: "NONE"
+        },
+        dateAdd: {
+            type: Date,
+            require: [true, 'La fecha es obligatoria'],
+            default: isoDate
         }
     }],
     datos_medico: [{
@@ -59,6 +68,11 @@ var enfermedadSchema = new Schema({
             type: String,
             require: false,
             default: "NONE"
+        },
+        dateAdd: {
+            type: Date,
+            require: [true, 'La fecha es obligatoria'],
+            default: isoDate
         }
     }],
     tratamiento: [{
@@ -78,6 +92,11 @@ var enfermedadSchema = new Schema({
             type: String,
             require: [true, 'La descripción del tratamiento es obligatorio']
         },
+        dateAdd: {
+            type: Date,
+            require: [true, 'La fecha es obligatoria'],
+            default: isoDate
+        }
     }],
     dateAdd: {
         type: Date,
