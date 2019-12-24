@@ -8,7 +8,7 @@ var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticac
 var app = express();
 var Cliente = require('../../models/cliente');
 
-app.get('/', (req, res) => {
+app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
 
     var body = req.body;
     var campo = body.campo;

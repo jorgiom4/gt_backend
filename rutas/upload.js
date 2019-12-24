@@ -2,19 +2,14 @@
 // Rutas para subir y gestionar ficheros del proyecto
 // ==================================================
 var express = require('express');
+var { verificaToken } = require('../middlewares/autenticacion');
 var fileupload = require('express-fileupload');
+var fs = require('fs');
 var pathUpload = require('../config/config').PATH_UPLOAD;
+var fileMaxSize = require('../config/config').FILE_MAX_SIZE;
 var fileExtensions = require('../config/config').UPLOAD_FILE_EXTENSIONS;
+var utils = require ('util');
 var app = express();
-
-// Uso del middleware configuramos las subidas
-var pathUploadTmp = pathUpload + "/tmp";
-app.use(fileupload({
-    useTempFile: true,
-    tempFileDir: pathUploadTmp,
-    limits: { fileSize: 3 * 1024 * 1024 * 1024 } // 3MB
-
-}));
 
 // ============================================================
 // Subida de ficheros al servidor por parde del usuario/cliente
@@ -23,17 +18,27 @@ app.post('/', (req, res) => {
 
     // Comprobamos que tenemos ficheros para subir
     if (!req.files) {
-        res.status(400).json({
+        return res.status(400).json({
             ok: false,
             error: 'No hay fichero seleccionado para subir'
         });
 
     }
 
+    //console.log("Datos de usuario logado con token válido: " + req.datos);
+
     // Obtenemos el fichero
     var archivo = req.files.archivo;
 
-    // Validamos la extensión del fichero sa subir
+    // Comprobamos el tamaño del fichero
+    if (archivo.size > fileMaxSize){
+        return res.status(400).json({
+            ok: false,
+            error: 'Fichero supera máximo tamaño permitido: ' + fileMaxSize
+        });
+    }
+
+    // Validamos la extensión del fichero a subir
     var nombreFichero = archivo.name.split('.');
     var extension = nombreFichero[nombreFichero.length - 1];
     if (fileExtensions.indexOf(extension) < 0) {
@@ -45,6 +50,14 @@ app.post('/', (req, res) => {
             }
         });
     }
+
+    // Comprobamos si el directorio del usuario está creado, si no lo está lo creamos
+    /*
+    var dirUser = pathUpload + '/' + 
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+    */
 
     // Construimos el path se subida
     var path = pathUpload + "/file.png";
@@ -64,7 +77,7 @@ app.post('/', (req, res) => {
 
             });
         }
-    });
+    });    
 });
 
 
