@@ -3,13 +3,13 @@
 // El nuevo usuario/cliente tendrá que registrar su direccion de correo y validarlo
 // ================================================================================
 
-var express = require('express');
-var bcrypt = require('bcryptjs');
-var randomstring = require("randomstring");
-var NewUser = require('../../models/new-user');
-var htmlEmail = require('../../middlewares/htmlemail');
-var mailService = require('../../middlewares/mailservice');
-var app = express();
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const randomstring = require("randomstring");
+const NewUser = require('../../models/new-user');
+const htmlEmail = require('../../middlewares/htmlemail');
+const mailService = require('../../middlewares/mailservice');
+const app = express();
 
 // Obtenemos los datos del usuario que quiere registrarse
 app.post('/', (req, res) => {

@@ -1,12 +1,11 @@
 // ====================================================================================
 // Rutas para la creación y actualización de los datos de enfermedades de los pacientes
 // ====================================================================================
-var express = require('express');
-var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
-var app = express();
-var Paciente = require('../../models/paciente');
-var Enfermedad = require('../../models/enfermedad');
-var util = require('util');
+const express = require('express');
+const { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
+const app = express();
+const Paciente = require('../../models/paciente');
+const Enfermedad = require('../../models/enfermedad');
 
 // =============================
 // Listar todas las enfermedades
@@ -40,8 +39,8 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
 // =================
 app.post('/', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var idP = body.idP;
+    const body = req.body;
+    const idP = body.idP;
 
     // Primero comprobamos si existe el paciente registrado, activo y valido
     buscarPacienteById(idP)
@@ -113,11 +112,11 @@ app.post('/', verificaToken, (req, res) => {
 // ==============================
 app.put('/hospi', (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
+    const body = req.body;
+    const id = body.id;
 
     // Objecto hospital a guardar
-    var hospi = {
+    const hospi = {
         hospital: body.hospital,
         ingreso: body.ingreso,
         alta: body.alta,
@@ -153,11 +152,11 @@ app.put('/hospi', (req, res) => {
 // ===============================
 app.put('/medico', (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
+    const body = req.body;
+    const id = body.id;
 
     // Objecto hospital a guardar
-    var medico = {
+    const medico = {
         nombre: body.nombre,
         numColegiado: body.numColegiado,
         coment: body.coment
@@ -192,11 +191,11 @@ app.put('/medico', (req, res) => {
 // ==================================
 app.put('/tratamiento', (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
+    const body = req.body;
+    const id = body.id;
 
     // Objecto hospital a guardar
-    var tratamiento = {
+    const tratamiento = {
         nombre: body.nombre,
         comienzo: body.comienzo,
         final: body.final,

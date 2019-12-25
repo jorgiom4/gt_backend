@@ -1,12 +1,12 @@
 // ============================
 // Servicio de envio de emails
 // ============================
-var nodemailer = require('nodemailer');
-var serverHost = require('../config/config').SERVER_SMPT;
-var serverPort = require('../config/config').SERVER_SMPT_PORT;
-var serverUser = require('../config/config').SERVER_SMPT_USER;
-var serverPass = require('../config/config').SERVER_SMPT_PASS;
-var serverFrom = require('../config/config').SERVER_SMPT_FROM;
+const nodemailer = require('nodemailer');
+const serverHost = require('../config/config').SERVER_SMPT;
+const serverPort = require('../config/config').SERVER_SMPT_PORT;
+const serverUser = require('../config/config').SERVER_SMPT_USER;
+const serverPass = require('../config/config').SERVER_SMPT_PASS;
+const serverFrom = require('../config/config').SERVER_SMPT_FROM;
 
 // Enviamos el mail
 exports.sendMail = (eTo, eSubject, eText) => {

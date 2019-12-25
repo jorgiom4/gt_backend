@@ -5,12 +5,12 @@
  * Se entiende que al ser personas dependientes deberían de estar supervisados
  */
 
-var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var pacienteSchema = new Schema({
+const pacienteSchema = new Schema({
     datos_personales: {
         idCliente: {
             type: Schema.ObjectId,

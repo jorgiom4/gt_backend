@@ -3,16 +3,16 @@
  * Schema para las enfermedades de los pacientes.
  */
 
-var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 // Componemos la fecha actual en formato ISODate
-var fecha = new Date();
-var isoDate = fecha.toISOString();
+const fecha = new Date();
+const isoDate = fecha.toISOString();
 
-var enfermedadSchema = new Schema({
+const enfermedadSchema = new Schema({
     idPaciente: { // Identificador del paciente al que pertenece la enfermedad
         type: String,
         unique: false,

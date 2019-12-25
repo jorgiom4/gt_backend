@@ -2,12 +2,12 @@
 // Entidad para el registro de nuevos usuarios/clientes
 // ========================================================================
 
-var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var newUserSchema = new Schema({
+const newUserSchema = new Schema({
     nombre: {
         type: String,
         required: [true, 'El nombre de usuario es obligatorio']
@@ -44,8 +44,8 @@ var newUserSchema = new Schema({
 //Creamos un objeto usuario con los campos que necesitamos para visualización
 newUserSchema.methods.toJSON = function() {
 
-    var user = this;
-    var userObject = user.toObject();
+    const user = this;
+    const userObject = user.toObject();
     delete userObject.pass;
     delete userObject.randomText;
 

@@ -3,12 +3,12 @@
  * Schema para los usuarios.
  */
 
-var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var usuarioSchema = new Schema({
+const usuarioSchema = new Schema({
     datos_personales: {
         nombre: {
             type: String,
@@ -136,8 +136,8 @@ var usuarioSchema = new Schema({
 //Creamos un objeto usuario con los campos que necesitamos para visualización
 usuarioSchema.methods.toJSON = function() {
 
-    var user = this;
-    var userObject = user.toObject();
+    const user = this;
+    const userObject = user.toObject();
     //delete userObject.datos_acceso.pass;
 
     return userObject;

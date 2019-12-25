@@ -2,17 +2,17 @@
 // Endpoints para la búsqueda de pacientes, se podrán realizar búsquedas por id, nombre
 // apellidos, dni, dirección, ciudad, localidad, contacto, seguro médico y activos
 // ====================================================================================
-var express = require('express');
-var { verificaToken } = require('../../middlewares/autenticacion');
-var app = express();
-var Paciente = require('../../models/paciente');
-var Enfermedad = require('../../models/enfermedad');
+const express = require('express');
+const { verificaToken } = require('../../middlewares/autenticacion');
+const app = express();
+const Paciente = require('../../models/paciente');
+const Enfermedad = require('../../models/enfermedad');
 
 app.get('/', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var campo = body.campo;
-    var termino = body.termino;
+    const body = req.body;
+    const campo = body.campo;
+    const termino = body.termino;
 
     var regex = new RegExp(termino, 'i');
 

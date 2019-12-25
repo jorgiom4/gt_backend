@@ -1,22 +1,22 @@
 // ======================================================
 // Rutas para la actualización de los datos de enfermedad
 // ======================================================
-var express = require('express');
-var { verificaToken } = require('../../middlewares/autenticacion');
-var app = express();
-var Enfermedad = require('../../models/enfermedad');
+const express = require('express');
+const { verificaToken } = require('../../middlewares/autenticacion');
+const app = express();
+const Enfermedad = require('../../models/enfermedad');
 
 // =================================================
 // Actualizamos los datos generales de la enfermedad
 // =================================================
 app.put('/general', verificaToken, (req, res) => {
 
-    var body = req.body;
+    const body = req.body;
 
-    var id = body.id;
-    var enfermedad = body.enfermedad;
-    var fecha = body.fecha;
-    var curacion = body.curacion;
+    const id = body.id;
+    const enfermedad = body.enfermedad;
+    const fecha = body.fecha;
+    const curacion = body.curacion;
 
     Enfermedad.findByIdAndUpdate(id, {
         $set: {
@@ -52,12 +52,12 @@ app.put('/general', verificaToken, (req, res) => {
 // ======================================
 app.put('/hospi', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
-    var idh = body.hospitalizacion.id;
+    const body = req.body;
+    const id = body.id;
+    const idh = body.hospitalizacion.id;
 
     // Objeto a guardar
-    var hospi = {
+    const hospi = {
         hospital: body.hospitalizacion.hospital,
         ingreso: body.hospitalizacion.ingreso,
         alta: body.hospitalizacion.alta,
@@ -93,12 +93,12 @@ app.put('/hospi', verificaToken, (req, res) => {
 // ==============================
 app.put('/medico', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
-    var idm = body.medico.id;
+    const body = req.body;
+    const id = body.id;
+    const idm = body.medico.id;
 
     // Objeto a guardar
-    var medico = {
+    const medico = {
         nombre: body.medico.nombre,
         numColegiado: body.medico.numColegiado,
         coment: body.medico.coment
@@ -133,12 +133,12 @@ app.put('/medico', verificaToken, (req, res) => {
 // ========================
 app.put('/tratamiento', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
-    var idt = body.tratamiento.id;
+    const body = req.body;
+    const id = body.id;
+    const idt = body.tratamiento.id;
 
     // Objeto a guardar
-    var tratamiento = {
+    const tratamiento = {
         nombre: body.tratamiento.nombre,
         comienzo: body.tratamiento.comienzo,
         final: body.tratamiento.final,

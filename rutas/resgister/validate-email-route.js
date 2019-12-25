@@ -3,17 +3,16 @@
 // el correo y ha pulsado en el enlace para su validación
 // ================================================================================
 
-var express = require('express');
-var UsuarioNuevo = require('../../models/new-user');
-
-var app = express();
+const express = require('express');
+const UsuarioNuevo = require('../../models/new-user');
+const app = express();
 
 // ============================================================================
 // Validamos contra la base de datos el email del usuario con el token generado
 // ============================================================================
 app.get('/:token', (req, res) => {
 
-    var token = req.params.token;
+    const token = req.params.token;
 
     buscarNuevoUsuarioByToken(token)
 
