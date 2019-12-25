@@ -32,7 +32,7 @@ module.exports.SERVER_SMPT_FROM = 'pruebas@instancia2.es';
 // Path Files Uploads
 // ==================
 module.exports.PATH_UPLOAD = './upload';
-module.exports.FILE_DOC_MAX_SIZE = 625000;
-module.exports.FILE_IMG_MAX_SIZE = 125000;
+module.exports.FILE_DOC_MAX_SIZE = 3072; // 3MB
+module.exports.FILE_IMG_MAX_SIZE = 1024; // 1MB
 module.exports.UPLOAD_FILE_DOC_EXTENSIONS = ['docx', 'doc', 'txt', 'pdf'];
 module.exports.UPLOAD_FILE_IMG_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif'];

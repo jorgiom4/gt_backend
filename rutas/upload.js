@@ -10,6 +10,7 @@ var fileDocMaxSize = require('../config/config').FILE_DOC_MAX_SIZE;
 var fileImgMaxSize = require('../config/config').FILE_IMG_MAX_SIZE;
 var fileDocExtensions = require('../config/config').UPLOAD_FILE_DOC_EXTENSIONS;
 var fileImgExtensions = require('../config/config').UPLOAD_FILE_IMG_EXTENSIONS;
+var Usuario = require('../models/usuario');
 var utils = require('util');
 var app = express();
 app.use(fileUpload());
@@ -36,10 +37,11 @@ app.post('/', verificaToken, (req, res) => {
     var archivo = req.files.archivo;
     var nombreFicheroCompleto = archivo.name;
     var nombreFichero = nombreFicheroCompleto.split('.');
+    var fileSize = archivo.size / 1024; // Lo pasamos a KB
 
     // Comprobamos el tamaño del fichero dependiendo del tipo de fichero
     if (fileType === 'doc') {
-        if (archivo.size > fileDocMaxSize) {
+        if (fileSize > fileDocMaxSize) {
             return res.status(400).json({
                 ok: false,
                 error: 'Fichero supera máximo tamaño permitido: ' + fileDocMaxSize,
@@ -48,7 +50,7 @@ app.post('/', verificaToken, (req, res) => {
         }
     }
     if (fileType === 'img') {
-        if (archivo.size > fileImgMaxSize) {
+        if (fileSize > fileImgMaxSize) {
             return res.status(400).json({
                 ok: false,
                 error: 'Fichero supera máximo tamaño permitido: ' + fileImgMaxSize,
@@ -107,17 +109,48 @@ app.post('/', verificaToken, (req, res) => {
                 error: 'Error al subir fichero, ' + err
             });
         } else {
-            res.status(200).json({
-                ok: true,
-                mensaje: 'Fichero subido correctamente',
-                file: path
-
-            });
+            // Actualizamos los datos del usuario con la imagen
+            saveUserImage(idUser, path)
+                .then(img => {
+                    res.status(200).json({
+                        ok: true,
+                        mensaje: 'Imagen de usuario actualizado' + img
+                    });
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        ok: false,
+                        mensaje: 'Error al actualizar imagen de usuario' + err
+                    });
+                });
         }
     });
 });
 
+// ============================================================
+// Actualizamos los datos de ubicación de la imagen del usuario
+// dentro de la carpeta de descargas
+// ========================================================
+function saveUserImage(id, path) {
 
+    return new Promise((resolve, reject) => {
+        Usuario.findByIdAndUpdate(id, {
+            $set: {
+                "datos_personales.img": path
+            }
+        }, (err, imgGuardada) => {
+            if (err) {
+                reject('Error al actualizar la imagen del cliente');
+            }
+            if (!imgGuardada) {
+                reject('No se ha encontrado usuario con ID: ' + id);
+            } else {
+                resolve(path);
+            }
+        });
+    });
+
+}
 
 
 module.exports = app;
