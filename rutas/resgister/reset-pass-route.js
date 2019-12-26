@@ -8,6 +8,7 @@ const portHost = require('../../config/config').SERVER_HOST_DEV_PORT;
 const htmlEmail = require('../../middlewares/htmlemail');
 const mailService = require('../../middlewares/mailservice');
 const NewUser = require('../../models/new-user');
+const utils = require('util');
 
 // ================================================================================
 // Creamos el proceso para el recuperado/reset de la contraseña del usuario/cliente
@@ -20,15 +21,9 @@ app.post('/', (req, res) => {
     // Buscamos el usuario por email en la tabla de nuevos usuarios
     buscarNewUserByMail(mail)
         .then(usuario => {
-
-            console.log("Usuario encontrado: " + usuario);
-
             // Enviamos email con el token de seguridad para que puean cambiar la contraseña
-            var userRandom = usuario.randomText;
-            const urlServer = urlHost + portHost + '/register/newpass/' + userRandom;
-
-            console.log("userRandom: " + userRandom);
-            console.log("Reset de contraseña url en mail: " + urlServer);
+            const tokenAccount = usuario.account_token;
+            const enlace = urlHost + portHost + '/register/newpass/' + tokenAccount;
 
             const texto = htmlEmail.getHtmlForResetPass(enlace);
             mailService.sendMail(mail, "Geritronic - Recuperación contraseña", texto);
@@ -46,11 +41,14 @@ app.post('/', (req, res) => {
 
 });
 
+// ==============================================================================
+// Buscamos el email en la tabla de nuevos usuarios para saber si está registrado
+// ==============================================================================
 function buscarNewUserByMail(mail){
 
     return new Promise((resolve, reject) => {
 
-        NewUser.find({ "email": mail })
+        NewUser.findOne({ "email": mail })
             .exec((err, usuario) => {
 
                 if (err) {

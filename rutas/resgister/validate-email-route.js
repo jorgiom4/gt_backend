@@ -60,7 +60,7 @@ function buscarNuevoUsuarioByToken(token) {
 
     return new Promise((resolve, reject) => {
 
-        UsuarioNuevo.findOne({ randomText: token })
+        UsuarioNuevo.findOne({ account_token: token })
             .exec((err, usuario) => {
                 if (err) {
                     reject('Error al buscar el usuario con token: ' + token + '', err);

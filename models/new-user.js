@@ -21,9 +21,13 @@ const newUserSchema = new Schema({
         type: String,
         required: [true, 'La constraseña de usuario es obligatorio']
     },
-    randomText: {
+    account_token: {
         type: String,
-        required: [true, 'RandomText es obligatorio']
+        required: [true, 'account_token es obligatorio']
+    },
+    pass_token: {
+        type: String,
+        required: [true, 'pass_token es obligatorio']
     },
     dateAdd: {
         type: Date
@@ -47,7 +51,8 @@ newUserSchema.methods.toJSON = function() {
     const user = this;
     const userObject = user.toObject();
     delete userObject.pass;
-    delete userObject.randomText;
+    delete userObject.account_token;
+    delete userObject.pass_token;
 
     return userObject;
 };
