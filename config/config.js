@@ -25,7 +25,7 @@ module.exports.SERVER_HOST_PROD_PORT = 4200;
 module.exports.SERVER_SMPT = 'smtp.ionos.com';
 module.exports.SERVER_SMPT_PORT = '587';
 module.exports.SERVER_SMPT_USER = 'pruebas@instancia2.es';
-module.exports.SERVER_SMPT_PASS = 'minotm4';
+module.exports.SERVER_SMPT_PASS = '?8DGO{g+SKN]:5yUn8';
 module.exports.SERVER_SMPT_FROM = 'pruebas@instancia2.es';
 
 // ==================

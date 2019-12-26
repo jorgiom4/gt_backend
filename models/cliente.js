@@ -96,10 +96,11 @@ clienteSchema.methods.toJSON = function() {
 
     const cliente = this;
     const clienteObject = cliente.toObject();
-    delete clienteObject.datos_acceso.pass;
+    delete clienteObject.datos_acceso;
 
     return clienteObject;
 };
+
 
 clienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 module.exports = mongoose.model('clientes', clienteSchema);

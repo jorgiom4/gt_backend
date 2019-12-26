@@ -15,21 +15,21 @@ const app = express();
 app.post('/', (req, res) => {
 
     // Obtenemos la informacion del usuario
-    var body = req.body;
+    const body = req.body;
 
     //Generamos el seed aleatorio
-    var random = randomstring.generate(128);
+    const random = randomstring.generate(128);
 
     // Creamos las fechas de creación y expiracion
-    var fecha = new Date();
-    var isoDate = fecha.toISOString();
-    var fechaToken = new Date(isoDate);
-    var fechaAux = new Date(fechaToken);
+    const fecha = new Date();
+    const isoDate = fecha.toISOString();
+    const fechaToken = new Date(isoDate);
+    const fechaAux = new Date(fechaToken);
     // El token expira en un dia
-    var fechaExp = new Date(fechaAux.setDate(fechaAux.getDate() + 1)).toISOString();
+    const fechaExp = new Date(fechaAux.setDate(fechaAux.getDate() + 1)).toISOString();
 
     // Guardamos en base de datos el nuevo registro
-    var usuarioNuevo = new NewUser({
+    const usuarioNuevo = new NewUser({
         nombre: body.userName,
         email: body.userMail,
         pass: bcrypt.hashSync(body.userPass, 10),
@@ -51,9 +51,9 @@ app.post('/', (req, res) => {
         }
 
         //Componemos y enviamos el mail para validación del email del usuario
-        var enlace = "http://localhost:3000/register/validatemail/" + random;
+        const enlace = "http://localhost:3000/register/validatemail/" + random;
 
-        var texto = htmlEmail.getHtmlForRegisterUserEmail(enlace);
+        const texto = htmlEmail.getHtmlForRegisterUserEmail(enlace);
         //console.log("Registrando nuevo usuario, texto html: " + texto);
         mailService.sendMail(body.userMail, "Geritronic - Validación correo electrónico", texto);
 

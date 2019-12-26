@@ -11,8 +11,10 @@ const serverFrom = require('../config/config').SERVER_SMPT_FROM;
 // Enviamos el mail
 exports.sendMail = (eTo, eSubject, eText) => {
 
+    console.log("Dentro de mailservice");
+
     // Configuramos los datos del servidor SMTP
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         host: serverHost,
         port: serverPort,
         secure: false, // upgrade later with STARTTLS
@@ -23,14 +25,14 @@ exports.sendMail = (eTo, eSubject, eText) => {
     });
 
     // Seteamos los datos del envio
-    var mailOptions = {
+    const mailOptions = {
         from: serverFrom,
         to: eTo,
         subject: eSubject,
         html: eText
     };
 
-    //console.log("mailoptions: " + mailOptions.from + " " + mailOptions.to + " " + mailOptions.subject + " " + mailOptions.html);
+    console.log("mailoptions: " + mailOptions.from + " " + mailOptions.to + " " + mailOptions.subject + " " + mailOptions.html);
 
     // Realizamos el envio del email
     transporter.sendMail(mailOptions, (error, info) => {

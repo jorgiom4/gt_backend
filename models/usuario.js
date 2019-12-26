@@ -9,6 +9,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 const usuarioSchema = new Schema({
+
     datos_personales: {
         nombre: {
             type: String,
@@ -76,7 +77,7 @@ const usuarioSchema = new Schema({
         email: {
             type: String,
             unique: true,
-            required: [true, 'El correo electronico es obligatorio']
+            required: [true, 'El correo electrónico es obligatorio']
         },
         pass: {
             type: String,
