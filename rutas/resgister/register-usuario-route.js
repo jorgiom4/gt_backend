@@ -33,10 +33,12 @@ app.post('/', (req, res) => {
         nombre: body.userName,
         email: body.userMail,
         pass: bcrypt.hashSync(body.userPass, 10),
-        account_token: random,
-        pass_token: "NONE",
+        account_token: {
+            token: random,
+            dateAdd: isoDate,
+            dateExp: fechaExp,
+        },
         dateAdd: isoDate,
-        dateExp: fechaExp,
         active: false,
         valid: false
     });

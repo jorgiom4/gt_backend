@@ -22,17 +22,28 @@ const newUserSchema = new Schema({
         required: [true, 'La constraseña de usuario es obligatorio']
     },
     account_token: {
-        type: String,
-        required: [true, 'account_token es obligatorio']
+        token: {
+          type: String
+        },
+        dateAdd: {
+            type: Date
+        },
+        dateExp: {
+            type: Date
+        }
     },
     pass_token: {
-        type: String,
-        required: [true, 'pass_token es obligatorio']
+        token: {
+            type: String
+        },
+        dateAdd: {
+            type: Date
+        },
+        dateExp: {
+            type: Date
+        },
     },
     dateAdd: {
-        type: Date
-    },
-    dateExp: {
         type: Date
     },
     active: {

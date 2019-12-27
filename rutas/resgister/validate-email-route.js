@@ -60,7 +60,7 @@ function buscarNuevoUsuarioByToken(token) {
 
     return new Promise((resolve, reject) => {
 
-        UsuarioNuevo.findOne({ account_token: token })
+        UsuarioNuevo.findOne({ "account_token.token": token })
             .exec((err, usuario) => {
                 if (err) {
                     reject('Error al buscar el usuario con token: ' + token + '', err);
@@ -71,7 +71,7 @@ function buscarNuevoUsuarioByToken(token) {
 
                     // Comprobamos que el token sigue vigente y no ha caducado
                     var fechaActual = new Date();
-                    var fechaExp = new Date(usuario.dateExp);
+                    var fechaExp = new Date(usuario.account_token.dateExp);
                     if (fechaActual > fechaExp) {
                         reject('El token introducido ha caducado el: ' + fechaExp + '', err);
                     } else {
