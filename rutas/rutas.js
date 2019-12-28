@@ -6,6 +6,7 @@ const app = express();
 const registerUserRuta = require('../rutas/resgister/register-usuario-route');
 const validateEmailRuta = require('../rutas/resgister/validate-email-route');
 const resetPassRuta = require('../rutas/resgister/reset-pass-route');
+const validateResetRuta = require('../rutas/resgister/validate-reset-route');
 
 const usuarioRuta = require('../rutas/usuario/usuario-route');
 const usuarioUpdateRuta = require('../rutas/usuario/usuario-update-route');
@@ -32,6 +33,7 @@ const uploadRuta = require('../rutas/upload');
 app.use('/register/new', registerUserRuta);
 app.use('/register/validatemail', validateEmailRuta);
 app.use('/register/reset', resetPassRuta);
+app.use('/register/validatepass', validateResetRuta);
 
 // Rutas de usuario
 app.use('/usuario', usuarioRuta);

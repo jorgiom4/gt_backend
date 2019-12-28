@@ -7,9 +7,8 @@ const urlHost = require('../../config/config').SERVER_HOST_DEV;
 const portHost = require('../../config/config').SERVER_HOST_DEV_PORT;
 const htmlEmail = require('../../middlewares/htmlemail');
 const mailService = require('../../middlewares/mailservice');
-const NewUser = require('../../models/new-user');
+const Registro = require('../../models/registros');
 const randomstring = require("randomstring");
-const utils = require('util');
 
 // ================================================================================
 // Creamos el proceso para el recuperado/reset de la contraseña del usuario/cliente
@@ -19,15 +18,15 @@ app.post('/', (req, res) => {
     const body = req.body;
     const mail = body.email;
 
-    // Buscamos el usuario por email en la tabla de nuevos usuarios
-    buscarNewUserByMail(mail)
-        .then(usuario => {
+    // Buscamos el usuario por email en la tabla de registro
+    buscarRegistroByMail(mail)
+        .then(cuenta => {
 
-            //Comprobamos si el usuario está activo y validado
-            if(!usuario.active || !usuario.valid){
+            //Comprobamos si la cuenta está activa y validado
+            if(!cuenta.active || !cuenta.valid){
                 res.status(500).json({
                     ok: false,
-                    mensake: 'El usuario no está activo o no está validado'
+                    mensake: 'La cuenta  no está activa o no está validada'
                 });
             }else{
 
@@ -35,7 +34,7 @@ app.post('/', (req, res) => {
                 const tokenPass = randomstring.generate(128);
 
                 // Guardamos el pass_token del usuario nuevo
-                setNewUserPassToken(usuario._id, tokenPass)
+                setRegistroPassToken(cuenta._id, tokenPass)
                     .then(updateUser => {
 
                         // Enviamos email con el token de seguridad para que puean cambiar la contraseña
@@ -47,7 +46,7 @@ app.post('/', (req, res) => {
                         // Enviamos respuesta de la operacion
                         res.status(200).json({
                             ok: true,
-                            usuario: usuario
+                            cuenta: cuenta
                         });
                     })
                     .catch(err => {
@@ -70,11 +69,11 @@ app.post('/', (req, res) => {
 // ==============================================================================
 // Buscamos el email en la tabla de nuevos usuarios para saber si está registrado
 // ==============================================================================
-function buscarNewUserByMail(mail){
+function buscarRegistroByMail(mail){
 
     return new Promise((resolve, reject) => {
 
-        NewUser.findOne({ "email": mail })
+        Registro.findOne({ "email": mail })
             .exec((err, usuario) => {
 
                 if (err) {
@@ -93,7 +92,7 @@ function buscarNewUserByMail(mail){
 // Insertamos el pass_token en el usuario nuevo para poder realizar
 // operaciones de cambio de contraseña por olvido
 // ==================================================================
-function setNewUserPassToken(id, token){
+function setRegistroPassToken(id, token){
 
     // Creamos las fechas de creación y expiracion
     const fecha = new Date();
@@ -105,20 +104,20 @@ function setNewUserPassToken(id, token){
 
     return new Promise((resolve, reject) => {
 
-        NewUser.findByIdAndUpdate(id, {
+        Registro.findByIdAndUpdate(id, {
             $set: {
                 "pass_token.token": token,
                 "pass_token.dateAdd": isoDate,
                 "pass_token.dateExp": fechaExp
             }
-        }, (err, usuario) => {
+        }, (err, cuenta) => {
             if (err) {
-                reject('Error al actualizar el usuario con id: ' + id);
+                reject('Error al actualizar la cuenta con id: ' + id);
             }
-            if (!usuario) {
-                reject('Error al actualizar el usuario con id: ' + id);
+            if (!cuenta) {
+                reject('Error al actualizar la cuenta con id: ' + id);
             } else {
-                resolve(usuario);
+                resolve(cuenta);
             }
         });
     });

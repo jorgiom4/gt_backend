@@ -6,7 +6,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const randomstring = require("randomstring");
-const NewUser = require('../../models/new-user');
+const NewUser = require('../../models/registros');
 const htmlEmail = require('../../middlewares/htmlemail');
 const mailService = require('../../middlewares/mailservice');
 const app = express();
@@ -40,7 +40,8 @@ app.post('/', (req, res) => {
         },
         dateAdd: isoDate,
         active: false,
-        valid: false
+        valid: false,
+        role: body.role
     });
 
     usuarioNuevo.save((err, usuarioGuardado) => {

@@ -4,7 +4,7 @@
 // ================================================================================
 
 const express = require('express');
-const UsuarioNuevo = require('../../models/new-user');
+const UsuarioNuevo = require('../../models/registros');
 const app = express();
 
 // ============================================================================

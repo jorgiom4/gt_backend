@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
 const app = express();
 const Usuario = require('../../models/usuario');
-const RegistroUsuarios = require('../../models/new-user');
+const RegistroUsuarios = require('../../models/registros');
 
 // ========================================================
 // Obtener todos los usuarios filtrado por datos personales

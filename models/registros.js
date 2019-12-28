@@ -53,6 +53,10 @@ const newUserSchema = new Schema({
     valid: {
         type: Boolean,
         default: false
+    },
+    role: {
+        type: String,
+        required: [true, 'El rol es obligatorio']
     }
 });
 
@@ -69,4 +73,4 @@ newUserSchema.methods.toJSON = function() {
 };
 
 newUserSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
-module.exports = mongoose.model('usuarios_nuevos', newUserSchema);
+module.exports = mongoose.model('registros', newUserSchema);
