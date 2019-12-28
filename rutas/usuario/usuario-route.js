@@ -1,14 +1,13 @@
 // ==============================================================
 // Rutas para la creación y actualización de los datos de usuario
 // ==============================================================
-
-var express = require('express');
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
-var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
-var app = express();
-var Usuario = require('../../models/usuario');
-var RegistroUsuarios = require('../../models/new-user');
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
+const app = express();
+const Usuario = require('../../models/usuario');
+const RegistroUsuarios = require('../../models/registros');
 
 // ========================================================
 // Obtener todos los usuarios filtrado por datos personales
@@ -27,8 +26,8 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
                     });
                 }
 
-                console.log("Recibiendo listado de usuarios");
-                console.log(usuarios);
+                //console.log("Recibiendo listado de usuarios");
+                //console.log(usuarios);
                 res.status(200).json({
                     ok: true,
                     usuarios: usuarios
@@ -36,9 +35,9 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
             })
 });
 
-// ==========================================
+// ======================
 // Crear un nuevo usuario
-// ==========================================
+// ======================
 app.post('/', (req, res) => {
 
     var body = req.body;
@@ -113,6 +112,11 @@ app.post('/', (req, res) => {
         })
         .catch(err => {
             console.log(err);
+            res.status(500).json({
+                ok: false,
+                mensaje: 'Usuario no registrado o no es válido',
+                error: err
+            });
         });
 
 });
@@ -278,7 +282,11 @@ function buscarUsuarioByEmail(email, regex) {
 
                 if (err) {
                     reject('Error al buscar el usuario con email: ' + email + '', err);
+                }
+                if (!usuario) {
+                    reject('No se ha encontrado un usuario registrado con email válido: ' + email + '', err);
                 } else {
+                    console.log("buscarUsuarioByEmail: " + usuario);
                     resolve(usuario);
                 }
             });

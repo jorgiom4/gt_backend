@@ -3,41 +3,45 @@
 // El nuevo usuario/cliente tendrá que registrar su direccion de correo y validarlo
 // ================================================================================
 
-var express = require('express');
-var bcrypt = require('bcryptjs');
-var randomstring = require("randomstring");
-var NewUser = require('../../models/new-user');
-var htmlEmail = require('../../middlewares/htmlemail');
-var mailService = require('../../middlewares/mailservice');
-var app = express();
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const randomstring = require("randomstring");
+const NewUser = require('../../models/registros');
+const htmlEmail = require('../../middlewares/htmlemail');
+const mailService = require('../../middlewares/mailservice');
+const app = express();
 
 // Obtenemos los datos del usuario que quiere registrarse
 app.post('/', (req, res) => {
 
     // Obtenemos la informacion del usuario
-    var body = req.body;
+    const body = req.body;
 
     //Generamos el seed aleatorio
-    var random = randomstring.generate(128);
+    const random = randomstring.generate(128);
 
     // Creamos las fechas de creación y expiracion
-    var fecha = new Date();
-    var isoDate = fecha.toISOString();
-    var fechaToken = new Date(isoDate);
-    var fechaAux = new Date(fechaToken);
+    const fecha = new Date();
+    const isoDate = fecha.toISOString();
+    const fechaToken = new Date(isoDate);
+    const fechaAux = new Date(fechaToken);
     // El token expira en un dia
-    var fechaExp = new Date(fechaAux.setDate(fechaAux.getDate() + 1)).toISOString();
+    const fechaExp = new Date(fechaAux.setDate(fechaAux.getDate() + 1)).toISOString();
 
     // Guardamos en base de datos el nuevo registro
-    var usuarioNuevo = new NewUser({
+    const usuarioNuevo = new NewUser({
         nombre: body.userName,
         email: body.userMail,
         pass: bcrypt.hashSync(body.userPass, 10),
-        randomText: random,
+        account_token: {
+            token: random,
+            dateAdd: isoDate,
+            dateExp: fechaExp,
+        },
         dateAdd: isoDate,
-        dateExp: fechaExp,
         active: false,
-        valid: false
+        valid: false,
+        role: body.role
     });
 
     usuarioNuevo.save((err, usuarioGuardado) => {
@@ -51,9 +55,9 @@ app.post('/', (req, res) => {
         }
 
         //Componemos y enviamos el mail para validación del email del usuario
-        var enlace = "";
+        const enlace = "http://localhost:3000/register/validatemail/" + random;
 
-        var texto = htmlEmail.getHtmlForRegisterUserEmail(enlace);
+        const texto = htmlEmail.getHtmlForRegisterUserEmail(enlace);
         //console.log("Registrando nuevo usuario, texto html: " + texto);
         mailService.sendMail(body.userMail, "Geritronic - Validación correo electrónico", texto);
 

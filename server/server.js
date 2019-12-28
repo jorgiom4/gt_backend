@@ -3,6 +3,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var urlDB = require('../config/config').urlDB;
+var portDev = require('../config/config').SERVER_HOST_DEV_PORT;
+var portProd = require('../config/config').SERVER_HOST_PROD_PORT;
 
 // Inicializar variables
 var app = express();
@@ -16,9 +18,10 @@ app.use(bodyParser.json());
 app.use(require('../rutas/rutas'));
 
 // Escuchar peticiones
-app.listen(3000, () => {
+var port = portDev
+app.listen(port, () => {
 
-    console.log('Express server puerto 3000: \x1b[32m%s\x1b[0m', 'online');
+    console.log('Express server puerto ' + port + ': \x1b[32m%s\x1b[0m', 'online');
 
 });
 
