@@ -3,12 +3,12 @@
  * Schema para los roles.
  */
 
-var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var rolSchema = new Schema({
+const rolSchema = new Schema({
     
     nombre: {
         type: String,

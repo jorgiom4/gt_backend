@@ -1,13 +1,13 @@
 // ==============================================================
 // Rutas para la creación y actualización de los datos de usuario
 // ==============================================================
-var express = require('express');
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
-var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
-var app = express();
-var Usuario = require('../../models/usuario');
-var RegistroUsuarios = require('../../models/new-user');
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
+const app = express();
+const Usuario = require('../../models/usuario');
+const RegistroUsuarios = require('../../models/registros');
 
 // ========================================================
 // Obtener todos los usuarios filtrado por datos personales

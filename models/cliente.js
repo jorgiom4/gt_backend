@@ -3,12 +3,12 @@
  * Schema para los clientes.
  */
 
-var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var clienteSchema = new Schema({
+const clienteSchema = new Schema({
     datos_personales: {
         nombre: {
             type: String,
@@ -94,12 +94,13 @@ var clienteSchema = new Schema({
 //Creamos un objeto cliente con los campos que necesitamos para visualización
 clienteSchema.methods.toJSON = function() {
 
-    var cliente = this;
-    var clienteObject = cliente.toObject();
-    delete clienteObject.datos_acceso.pass;
+    const cliente = this;
+    const clienteObject = cliente.toObject();
+    delete clienteObject.datos_acceso;
 
     return clienteObject;
 };
+
 
 clienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 module.exports = mongoose.model('clientes', clienteSchema);

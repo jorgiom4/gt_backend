@@ -3,16 +3,16 @@
 // apellidos, dni, dirección, ciudad, localidad, contacto, ubicación e email
 // Sólo los administradores podrán hacer uso de estos endpoints
 // ====================================================================================
-var express = require('express');
-var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
-var app = express();
-var Cliente = require('../../models/cliente');
+const express = require('express');
+const { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
+const app = express();
+const Cliente = require('../../models/cliente');
 
-app.get('/', (req, res) => {
+app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
 
-    var body = req.body;
-    var campo = body.campo;
-    var termino = body.termino;
+    const body = req.body;
+    const campo = body.campo;
+    const termino = body.termino;
 
     var regex = new RegExp(termino, 'i');
 

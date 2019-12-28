@@ -2,12 +2,12 @@
 // Rutas para la actualización de los datos de cliente
 // ===================================================
 
-var express = require('express');
-var bcrypt = require('bcryptjs');
-var { verificaToken } = require('../../middlewares/autenticacion');
-var app = express();
-var Cliente = require('../../models/cliente');
-var Roles = require('../../models/role');
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const { verificaToken } = require('../../middlewares/autenticacion');
+const app = express();
+const Cliente = require('../../models/cliente');
+const Roles = require('../../models/role');
 
 // =============================================
 // Actualizamos los datos personales del cliente
@@ -15,8 +15,8 @@ var Roles = require('../../models/role');
 // =============================================
 app.put('/personales', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
+    const body = req.body;
+    const id = body.id;
 
     Cliente.findByIdAndUpdate(id, {
         $set: {
@@ -57,11 +57,11 @@ app.put('/personales', verificaToken, (req, res) => {
 // ==============================================
 app.put('/contacto', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
-    var idc = body.contacto.idc;
+    const body = req.body;
+    const id = body.id;
+    const idc = body.contacto.idc;
 
-    var update = {
+    const update = {
         tlf: body.contacto.tlf
     };
 
@@ -95,9 +95,9 @@ app.put('/contacto', verificaToken, (req, res) => {
 // ==================================
 app.put('/img', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
-    var img = body.img;
+    const body = req.body;
+    const id = body.id;
+    const img = body.img;
 
     Cliente.findByIdAndUpdate(id, {
         $set: {
@@ -133,9 +133,9 @@ app.put('/img', verificaToken, (req, res) => {
 // ========================================================
 app.put('/ubicacion', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var id = body.id;
-    var ubicacion = body.ubicacion;
+    const body = req.body;
+    const id = body.id;
+    const ubicacion = body.ubicacion;
 
     Cliente.findByIdAndUpdate(id, {
         $set: {
@@ -170,9 +170,10 @@ app.put('/ubicacion', verificaToken, (req, res) => {
 // Lo hacemos en la tabla de cliente y en la tabla de registro
 // ============================================================
 app.put('/email', verificaToken, (req, res) => {
-    var body = req.body;
-    var id = body.id;
-    var email = body.email;
+
+    const body = req.body;
+    const id = body.id;
+    const email = body.email;
 
     // Actualizamos primero en la tabla de clientes
     Cliente.findByIdAndUpdate(id, {
@@ -208,9 +209,10 @@ app.put('/email', verificaToken, (req, res) => {
 // Actualizamos la contraseña
 // ==========================
 app.put('/pass', verificaToken, (req, res) => {
-    var body = req.body;
-    var id = body.id;
-    var pass = body.pass;
+
+    const body = req.body;
+    const id = body.id;
+    const pass = body.pass;
 
     Cliente.findByIdAndUpdate(id, {
         $set: {
@@ -245,8 +247,8 @@ app.put('/pass', verificaToken, (req, res) => {
 // ==================================
 app.put('/active', verificaToken, (req, res) => {
 
-    var body = req.body;
-    var id = body.id;    
+    const body = req.body;
+    const id = body.id;
 
     Cliente.findByIdAndUpdate(id, {
         $set: {

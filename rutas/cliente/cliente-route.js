@@ -1,13 +1,12 @@
 // ==============================================================
 // Rutas para la creación y actualización de los datos de cliente
 // ==============================================================
-var express = require('express');
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
-var { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
-var app = express();
-var Cliente = require('../../models/cliente');
-var RegistroUsuarios = require('../../models/new-user');
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { verificaToken, verificaAdminRole } = require('../../middlewares/autenticacion');
+const app = express();
+const Cliente = require('../../models/cliente');
 
 // ========================================================
 // Obtener todos los clientes filtrado por datos personales
